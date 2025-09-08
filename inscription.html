@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link rel="icon" type="image/png" href="./images/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo"><span>G</span>es<span>M</span>edic<span>P</span>atient</a>
+    </header>
+    <section id="home" class="home">
+
+        <div class="row">
+            <div class="images">
+                <img src="./images/inscription.png" alt="">
+            </div>
+            <div class="wrapper">
+                <div class="form-box register">
+                    <h2 class="animation" style="--i:17; --j:0;">INSCRIPTION</h2>
+                    <form action="/register" method="POST">
+                        <div class="input-box animation" >
+                            <input type="text" name="nom"required>
+                            <label>Nom</label>
+                            <i class='bx bxs-user'></i>
+                        </div>
+                        <div class="input-box animation">
+                            <input type="text" name="prenom" required>
+                            <label>Prenom</label>
+                            <i class='bx bxs-user'></i>
+                        </div>
+                        <div class="input-box animation">
+                           <input type="date" name="date_naissance" required max="2025-05-21">
+                        </div>
+                        <div class="input-box animation">
+                            <input type="text" name="email" required>
+                            <label>Email</label>
+                            <i class='bx bxs-envelope'></i>
+                        </div>
+                        <div class="input-box animation" >
+                            <input type="password" name="mot_de_passe" required>
+                            <label>Mot de passe</label>
+                            <i class='bx bxs-lock-alt'></i>
+                        </div>
+                        <div class="" >
+                            <button type="submit" class="button">S'inscrire</button>
+                        </div>
+                        <div class="logreg-link animation" >
+                            <p>Disposez-vous déjà d'un compte ? <a href="/connexion" class="login-link">Connectez-vous</a></p>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </section>
+    <!-- jquery cdn link  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- custom js file link  -->
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
