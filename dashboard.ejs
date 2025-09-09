@@ -1,0 +1,708 @@
+
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+            <meta charset="UTF-8">
+            <title>GesMedicPatient</title>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
+            <link rel="stylesheet" href="css/styles.css">
+            <link rel="icon" type="image/x-icon" href="./images/logo.png">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        </head>
+        <body>
+            <div class="container">
+                <aside>  
+                    <div class="top">
+                        <div class="logo">
+                            <h2>GesMedic<span class="primary">Patient</span></h2>
+                        </div>
+                    </div>
+                    <div class="bar">
+                        <a href="/logout">
+                            <span class="material-symbols-sharp">logout</span>
+                            <h3>Déconnexion</h3>
+                        </a>
+                    </div>
+                </aside>
+                
+                <main>
+                    <h1>Tableau de bord</h1>
+                    <button type="button" onclick="openCreateModal()" style="display: flex; align-items: center; gap: 8px; margin-left: auto; background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s;">
+                    <span class="material-symbols-sharp" style="font-size: 24px;">add_circle</span>
+                    <span style="font-size: 14px; font-weight:700; font-family: 'Roboto', sans-serif;">Créer une nouvelle demande</span>
+                    </button>
+                    <div class="recent_order">
+                        <table> 
+                            <thead>
+                                <tr>
+                                    <th>Motifs</th>
+                                    <th>Avancement service</th>
+                                    <th>Date demande</th>
+                                    <th>Type demandeur</th>  
+                                    <th>Nom demandeur</th>
+                                    <th>Prénom demandeur</th>
+                                    <th>Commentaires</th>
+                                    <th>Nom destinataire</th>
+                                    <th>Prénom destinataire</th>
+                                </tr>
+                            </thead>
+                            <tbody id="demandes-table-body">
+                                <tr><td colspan="9">Aucune donnée disponible</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+
+            </div>
+
+            <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+                <div style="background: white; padding: 15px; border-radius: 5px; width: 550px; max-height: 800px; overflow-y: auto;">
+                    <h2>Modifier la demande</h2>
+                    <form id="editForm" action="#" method="post">
+                        <label>Référence :</label>
+                        <input type="text" id="editReference" readonly><br>
+                        <label for="editMotifsTrigger">Motifs :</label>
+                        <div id="editMotifsContainer" style="padding: 8px; width: 505px; position: relative;">
+                        <div id="editMotifsTrigger" style="padding: 8px; cursor: pointer; background-color: white;width: 495px;"><i>Sélectionner un motif</i></div>
+                        <div id="editMotifs" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: white; border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;">
+                            <label><input type="checkbox" name="motifs" value="1"> Suivi médical</label><br>
+                            <label><input type="checkbox" name="motifs" value="2"> Expertise</label><br>
+                            <label><input type="checkbox" name="motifs" value="3"> Justice</label><br>
+                            <label><input type="checkbox" name="motifs" value="4"> Déménagement</label><br>
+                            <label><input type="checkbox" name="motifs" value="5"> MDPH/AAH/ALD</label><br>
+                            <label><input type="checkbox" name="motifs" value="6"> Archives</label><br>
+                            <label><input type="checkbox" name="motifs" value="7"> Personnel</label><br>
+                            <label><input type="checkbox" name="motifs" value="8"> Assurance</label><br>
+                            <label><input type="checkbox" name="motifs" value="9"> ONIAM</label><br>
+                            <label><input type="checkbox" name="motifs" value="10"> Saisie</label><br>
+                            <label><input type="checkbox" name="motifs" value="11"> TEST</label><br>
+                        </div>
+                        </div><br>
+                        <!-- <label>Avancement :</label>
+                        <input type="text" id="editAvancement" readonly><br> -->
+                        <label>Date de demande :</label>
+                        <input type="date" id="editDemandDate" readonly><br>
+                        <label>Type demandeur :</label><br>
+                        <label for="editTypeDemandeur">Sélectionner un type de demandeur</label><br>
+                        <select id="editTypeDemandeur" aria-placeholder="Sélectionner un type de demandeur" style="border-radius: 6px; padding: 8px; border: 1px solid #7a7777; width: 505px; margin-top: -40px;" required>
+                            <option value="1">Patient</option>
+                            <option value="2">Ayant-Droit</option>
+                            <option value="3">Autorité parentale</option>
+                            <option value="4">Médecin expert</option>
+                            <option value="5">Avocat</option>
+                            <option value="6">OPJ</option>
+                            <option value="7">Médecin conseil</option>
+                            <option value="8">Tuteur</option>
+                            <option value="9">Curateur</option>
+                            <option value="10">SRU (Service des Relations Usagers)</option>
+                            <option value="11">Test1</option>
+                        </select><br>
+                        <label>Nom du demandeur :</label>
+                        <input type="text" id="editNomDemandeur"><br>
+                        <label>Prénom du demandeur :</label>
+                        <input type="text" id="editPrenomDemandeur"><br>
+                        <label>Nom destinataire :</label>
+                        <input type="text" id="editNomDestinataire"><br>
+                        <label>Prénom destinataire :</label>
+                        <input type="text" id="editPrenomDestinataire"><br>
+                        <label>Adresse :</label><br>
+                        <input type="text" id="editAdresse" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
+                        <label>Code postal :</label><br>
+                        <input type="text" id="editCodePostal" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
+                        <label>Ville :</label><br>
+                        <input type="text" id="editVille" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
+                        <label>Email :</label><br>
+                        <input type="email" id="editEmail" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
+                        <label>Commentaire :</label>
+                        <textarea id="editCommentaire" rows="5" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;"></textarea><br>
+                        <button type="button" onclick="downloadDemandePDF()">Générer PDF</button>
+                        <button type="button" onclick="printDemande()">Imprimer</button>
+                        <button type="button" class="btn-green" onclick="saveChanges()">Enregistrer</button>
+                        <button type="button" class="btn-red" onclick="hideDemande()">Supprimer</button>
+                        <button type="button" onclick="closeEditModal()">Annuler</button>
+                    </form>
+                </div>
+            </div>
+            <div id="createModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 8, 8, 0.5); justify-content: center; align-items: center;">
+                <div style="background: white; padding: 15px; border-radius: 8px; width: 550px; max-height: 800px; overflow-y: auto; ">
+                    <h2 style="color:#007bff">Créer une nouvelle demande</h2>
+                    <form id="createForm" action="/createDemande" method="post" enctype="multipart/form-data" onsubmit="createDemande(event); return false;">
+                        <label style="color:red">Date de la demande (*)</label>
+                        <input type="date" placeholder="Date demande" name="dateDemande" id="createDateDemande" required><br>
+                        <label>Nom patient :</label>
+                        <input type="text" placeholder="Nom patient" name="nomPatient" id="createNomPatient" required><br>
+                        <label>Prénom patient :</label>
+                        <input type="text" placeholder="Prénom patient" name="prenomPatient" id="createPrenomPatient" required><br>
+                        <label>Date de naissance patient :</label>
+                        <input type="date" placeholder="Date de naissance patient" name="ddnPatient" id="createDdnPatient" required><br>
+                        <label style="color:red">Nom du demandeur (*)</label>
+                        <input type="text" placeholder="Nom demandeur" name="nomDemandeur" id="createNomDemandeur" required><br>
+                        <label style="color:red">Prénom du demandeur (*)</label>
+                        <input type="text" placeholder="Prénom demandeur" name="prenomDemandeur" id="createPrenomDemandeur" required><br>
+                        <label style="color:red">Type de demandeur (*)</label>
+                        <select id="createTypeDemandeur" style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
+                                <option value="1">Patient</option>
+                                <option value="2">Ayant droit</option>
+                                <option value="3">Autorité parentale</option>
+                                <option value="4">Médecin Expert</option>
+                                <option value="5">Avocat</option>
+                                <option value="6">OPJ</option>
+                                <option value="7">Medecin conseil</option>
+                                <option value="8">Tuteur</option>
+                                <option value="9">Curateur</option>
+                                <option value="10">SRU</option>
+                            </select> <br>
+                            <label> Pièces demandées :</label>
+                            <div id="createPiecesDemandees" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;">
+                                <label><input type="checkbox" name="piècesdemandes" value="1">Dossier Médical</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="2">Dossier Des soins infirmiers</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="3">Dossier D'anesthésie</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="4">Lettre du medecin qui est à l'origine</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="5">Les motifs d'hospitalisation</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="6">La recherche d'antécédents et de facteurs</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="7">Les conclusions de l'étude clinique initiale</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="8">Le type de prise en charge prévu</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="9">La nature des soins dispensés</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="10"> Les informations sur la démarche médicale</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="11">Les correspondances échangées</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="12">La prescription de sortie</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="13">Le compte-rendu opératoire ou d'accouchement</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="14">Le compte-rendu d'hospitalisation</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="15">Les documents personnels (non facturable)</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="16">Examen de laboratoire</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="17">ECG</label><br>
+                                <label><input type="checkbox" name="piècesdemandes" value="18">Imagerie médicale</label><br>
+                            </div> <br>
+                            <label style="color:red">Motifs (*) :</label>
+                        <div id="createMotifs" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;">
+                            <label><input type="checkbox" name="motifs" value="1"> Suivi médical</label><br>
+                            <label><input type="checkbox" name="motifs" value="2"> Expertise</label><br>
+                            <label><input type="checkbox" name="motifs" value="3"> Justice</label><br>
+                            <label><input type="checkbox" name="motifs" value="4"> Déménagement</label><br>
+                            <label><input type="checkbox" name="motifs" value="5"> MDPH/AAH/ALD</label><br>
+                            <label><input type="checkbox" name="motifs" value="6"> Archives</label><br>
+                            <label><input type="checkbox" name="motifs" value="7"> Personnel</label><br>
+                            <label><input type="checkbox" name="motifs" value="8"> Assurance</label><br>
+                            <label><input type="checkbox" name="motifs" value="9"> ONIAM</label><br>
+                            <label><input type="checkbox" name="motifs" value="10"> Saisie</label><br>
+                            <label><input type="checkbox" name="motifs" value="11"> TEST</label><br>
+                        </div><br> 
+                            <label style="width: 120px;">Lien avec patient :</label>
+                                <select id="createLienAvecPatient"  style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
+                                    <option value="1">Collègue</option>
+                                    <option value="2">Frère</option>
+                                    <option value="3">Médecin</option>
+                                    <option value="4">Enfant</option>
+                                    <option value="5">Dépendant handicapé</option>
+                                    <option value="6">Compagne / Compagnon</option>
+                                    <option value="7">Contact d'urgence</option>
+                                    <option value="8">Employé</option>
+                                    <option value="9">Employeur</option>
+                                    <option value="10">Proche</option>
+                                    <option value="11">Enfant adoptif</option>
+                                    <option value="12">Ami</option>
+                                    <option value="13">Père</option>
+                                    <option value="14">Petits-enfants</option>
+                                    <option value="15">Tuteur</option>
+                                    <option value="16">Grand-parent</option>
+                                    <option value="17">Directeur</option>
+                                    <option value="18">Mère</option>
+                                    <option value="19">Enfant naturel</option>
+                                    <option value="20">Autre</option>
+                                    <option value="21">Autre adulte</option>
+                                    <option value="22">Aucun</option>
+                                    <option value="23">Propriétaire</option>
+                                    <option value="24">Parent proche</option>
+                                    <option value="25">Beau fils</option>
+                                    <option value="26">Elle/lui-même</option>
+                                    <option value="27">Frère & soeur</option>
+                                    <option value="28">Soeur</option>
+                                    <option value="29">Epoux</option>
+                                    <option value="30">Entraineur</option>
+                                    <option value="31">Inconnu</option>
+                                    <option value="32">Tutelle judiciaire</option>
+                                </select> <br>
+                        <label>Date souhaitée par le demandeur:</label>
+                        <input type="date" placeholder="Date souhaitée" name="dateSouhaitee" id="createDateSouhaitee" ><br>
+                        <label style="color:red">Nom du destinataire (*) :</label>
+                        <input type="text" placeholder="Nom du destinataire" name="nomDestinataire" id="createNomDestinataire" ><br>
+                        <label style="color:red">Prénom du destinataire (*) :</label>
+                        <input type="text" placeholder="Prénom du destinataire" name="prenomDestinataire" id="createPrenomDestinataire" ><br>
+                        <label style="color:red">Adresse du destinataire (*) :</label>
+                        <input type="text" placeholder="Adresse du destinataire" name="adresseDestinataire" id="createAdresseDestinataire"><br>
+                        <label style="color:red">Code postal du destinataire (*) :</label>
+                        <input type="text" placeholder="Code postal du destinataire" name="codePostalDestinataire" id="createCodePostalDestinataire"><br>
+                        <label style="color:red">Ville du destinataire (*) :</label>
+                        <input type="text" placeholder="Ville du destinataire" name="villeDestinataire" id="createVilleDestinataire"><br>
+                        <label>Adresse e-mail :</label>
+                        <input type="email" placeholder="Adresse e-mail" name="emailDestinataire" id="createEmailDestinataire"><br>
+                        <label> Date debut de séjour</label>
+                        <input type="date" placeholder="Date debut de séjour" name="dateDebutSejour" id="createDateDebutSejour" ><br>
+                        <label> Date fin de séjour</label>
+                        <input type="date" placeholder="Date fin de séjour" name="dateFinSejour" id="createDateFinSejour" ><br>
+                        <label>Commentaires du demandeur :</label>
+                        <textarea id="createCommentaire" rows="10" style="width: 100%;" required></textarea><br>
+                        <button type="submit" class="btn-green" >Créer</button>
+                        <button type="button" onclick="closeCreateModal()">Annuler</button>
+                    </form>
+                </div>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
+        
+            <script>
+                
+                function loadDemandes() {
+                    try {
+                        const demandes = <%- JSON.stringify(typeof demandes !== 'undefined' ? demandes : []) %>;
+                        console.log('Données des demandes:', demandes);
+                        const tableBody = document.getElementById('demandes-table-body');
+                        tableBody.innerHTML = '';
+                        if (demandes && demandes.length > 0) {
+                                demandes[0].forEach((demande, index) => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `  
+                                    <td>${demande.MOTIF_NOM || ''}</td>
+                                    <td>${demande.AVANCEMENT_NOM || 'en cours'}</td>
+                                    <td>${demande.DEMAND_DATE ? new Date(demande.DEMAND_DATE).toLocaleDateString('fr-FR') : ''}</td>
+                                    <td>${demande.PROFIL_NOM || ''}</td>
+                                    <td>${demande.NOM_DEMANDEUR || ''}</td>
+                                    <td>${demande.PRENOM_DEMANDEUR || ''}</td>
+                                    <td>${demande.NOTES ? demande.NOTES.replace(/<[^>]+>/g, '') : ''}</td>
+                                    <td>${demande.DESTINATAIRE || ''}</td>
+                                    <td>${demande.PRENOM_DESTINATAIRE || ''}</td>
+                                   
+                                `;
+                                row.addEventListener('click', () => openEditModal(demande, index));
+                                tableBody.appendChild(row);
+                            });
+                        } else {
+                            tableBody.innerHTML = '<tr><td colspan="9">Aucune donnée disponible</td></tr>';
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de l\'affichage des données :', error);
+                        document.getElementById('demandes-table-body').innerHTML = '<tr><td colspan="9">Erreur lors de l\'affichage des données</td></tr>';
+                    
+                    }
+                }
+            function openEditModal(demande, index) {
+            // Récupérer la modale
+            const modal = document.getElementById('editModal');
+            // Remplir les champs du formulaire avec les données de la demande
+            console.log(demande.DEMAND_ID);
+            document.getElementById('editReference').value = demande.DEMAND_ID || '';
+            document.getElementById('editTypeDemandeur').value = demande.PROFIL_ID || '';
+            document.getElementById('editMotifs').value = demande.MOTIF_NOM || '';
+            // document.getElementById('editAvancement').value = demande.AVANCEMENT_NOM || '';
+            document.getElementById('editDemandDate').value = demande.DEMAND_DATE ? new Date(demande.DEMAND_DATE).toISOString().split('T')[0] : '';
+            document.getElementById('editTypeDemandeur').value = demande.PROFIL_NOM || '';
+            document.getElementById('editNomDemandeur').value = demande.NOM_DEMANDEUR || '';
+            document.getElementById('editPrenomDemandeur').value = demande.PRENOM_DEMANDEUR || '';
+            document.getElementById('editCommentaire').value = demande.COMMENTAIRE || '';
+            document.getElementById('editNomDestinataire').value = demande.DESTINATAIRE || '';
+            document.getElementById('editPrenomDestinataire').value = demande.PRENOM_DESTINATAIRE || '';
+            document.getElementById('editAdresse').value = demande.DEMANDEUR_ADR || '';
+            document.getElementById('editCodePostal').value = demande.DEMANDEUR_CP || '';
+            document.getElementById('editVille').value = demande.DEMANDEUR_VILLE || '';
+            document.getElementById('editEmail').value = demande.MAIL_DEMANDEUR || '';
+            
+            
+            // Handle motifs checkboxes
+            const motifCheckboxes = document.querySelectorAll('#editMotifs input[name="motifs"]');
+            motifCheckboxes.forEach(checkbox => {
+            checkbox.checked = Array.isArray(demande.MOTIF_ID) ? demande.MOTIF_ID.includes(checkbox.value) : false;
+                    });
+
+            modal.dataset.index = index;
+            // Afficher la modale
+            modal.style.display = 'flex';
+        }
+
+        function openCreateModal() {
+            // Réinitialiser le formulaire
+            document.getElementById('createForm').reset();
+            // Réinitialiser les cases à cocher des motifs
+            document.querySelectorAll('#createMotifs input[name="motifs"]').forEach(checkbox => checkbox.checked = false);
+            // Afficher la modale
+            document.getElementById('createModal').style.display = 'flex';
+            // mettre le focus sur le premier champ du formulaire
+            document.getElementById('createDateDemande').focus();
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').style.display = 'none';
+        }
+
+
+        // Déplacement des fonctions pour accessibilité globale
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+
+        }
+        function printDemande() {
+            // Récupère les valeurs du formulaire
+            const reference = document.getElementById('editReference').value;
+            const avancement = document.getElementById('editAvancement').value;
+            const demandDate = document.getElementById('editDemandDate').value;
+            const nomDemandeur = document.getElementById('editNomDemandeur').value;
+            const prenomDemandeur = document.getElementById('editPrenomDemandeur').value;
+            const commentaire = document.getElementById('editCommentaire').value;
+            const typeDemandeur = document.getElementById('editTypeDemandeur').value;
+            const nomDestinataire = document.getElementById('editNomDestinataire').value;
+            const prenomDestinataire = document.getElementById('editPrenomDestinataire').value;
+            const selectedMotifs = Array.from(document.querySelectorAll('#editMotifs input[name="motifs"]:checked'))
+                        .map(checkbox => checkbox.nextSibling.textContent.trim())
+                        .join(', ');
+            // contenu à imprimer
+            const printContent = `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2>Fiche Demande</h2>
+                    <p><strong>Référence :</strong> ${reference}</p>
+                    <p><strong>Motifs :</strong> ${selectedMotifs}</p>
+                    <p><strong>Avancement :</strong> ${avancement}</p>
+                    <p><strong>Date de demande :</strong> ${demandDate}</p>
+                    <p><strong>Type demandeur :</strong> ${typeDemandeur}</p>
+                    <p><strong>Nom du demandeur :</strong> ${nomDemandeur}</p>
+                    <p><strong>Prénom du demandeur :</strong> ${prenomDemandeur}</p>
+                    <p><strong>Nom du destinataire :</strong> ${nomDestinataire}</p>
+                    <p><strong>Prénom du destinataire :</strong> ${prenomDestinataire}</p>
+                    <p><strong>Commentaire :</strong><br>${commentaire.replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
+
+            // Ouvre une nouvelle fenêtre et imprime
+            const printWindow = window.open('', '', 'width=700,height=600');
+            printWindow.document.write('<html><head><title>Impression Demande</title></head><body>');
+            printWindow.document.write(printContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }
+
+        function downloadDemandePDF() {
+            const reference = document.getElementById('editReference').value;
+            const avancement = document.getElementById('editAvancement').value;
+            const demandDate = document.getElementById('editDemandDate').value;
+            const nomDemandeur = document.getElementById('editNomDemandeur').value;
+            const prenomDemandeur = document.getElementById('editPrenomDemandeur').value;
+            const commentaire = document.getElementById('editCommentaire').value;
+            const motifs = document.getElementById('editMotifs').value;
+            const typeDemandeur = document.getElementById('editTypeDemandeur').value;
+            const nomDestinataire = document.getElementById('editNomDestinataire').value;
+            const prenomDestinataire = document.getElementById('editPrenomDestinataire').value;
+            const selectedMotifs = Array.from(document.querySelectorAll('#editMotifs input[name="motifs"]:checked'))
+                        .map(checkbox => checkbox.nextSibling.textContent.trim())
+                        .join(', ');
+            // Utilisation de jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            //Titre principal
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(20);
+            doc.text('Fiche Demande', 105, 18, { align: 'center' });
+
+            // Ligne de séparation
+            doc.setDrawColor(100, 100, 100);
+            doc.line(20, 22, 190, 22);
+
+            // Infos principales
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            let y = 30;
+            const infos = [
+                { label: 'Référence', value: reference },
+                { label: 'Motifs', value: motifs },
+                { label: 'Type demandeur', value: typeDemandeur },
+                { label: 'Avancement', value: avancement },
+                { label: 'Date de demande', value: demandDate },
+                { label: 'Nom destinataire', value: nomDestinataire },
+                { label: 'Prénom destinataire', value: prenomDestinataire },
+                { label: 'Nom du demandeur', value: nomDemandeur },
+                { label: 'Prénom du demandeur', value: prenomDemandeur },
+
+            ];
+
+            const maxLabelWidth = Math.max(...infos.map(info => doc.getTextWidth(`${info.label} :`)));
+            const valueXPosition = 20 + maxLabelWidth + 5;
+            infos.forEach(info => {
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${info.label} :`, 20, y);
+                doc.setFont('helvetica', 'normal');
+            const valueText = info.value.length > 50 ? info.value.substring(0, 47) + '...' : info.value;
+                doc.text(valueText, valueXPosition, y);
+                y += 10;
+            });
+
+            // Encadré pour le commentaire
+            y += 5;
+            doc.setFont('helvetica', 'bold');
+            doc.text('Commentaire :', 20, y);
+            y += 4;
+            doc.setDrawColor(180, 180, 180);
+            doc.setLineWidth(0.5);
+            doc.rect(20, y, 170, 30, 'D');
+            doc.setFont('helvetica', 'normal');
+            const splitComment = doc.splitTextToSize(commentaire, 165);
+            doc.text(splitComment, 22, y + 7);
+            // Pied de page
+            doc.setFontSize(10);
+            doc.setTextColor(150);
+            doc.text('Document généré par GesMedicPatient', 105, 285, { align: 'center' });
+
+            doc.save(`Demande_${reference}.pdf`);
+        }
+        async function saveChanges() {
+            const reference = document.getElementById('editReference').value.trim();
+            const commentaire = document.getElementById('editCommentaire').value.trim();
+            const nomDemandeur = document.getElementById('editNomDemandeur').value.trim();
+            const editMotifs = document.getElementById('editMotifs');
+            const prenomDemandeur = document.getElementById('editPrenomDemandeur').value.trim();
+            const NomDestinataire = document.getElementById('editNomDestinataire').value.trim();
+            const PrenomDestinataire = document.getElementById('editPrenomDestinataire').value.trim();
+            const typeDemandeur = document.getElementById('editTypeDemandeur').value.trim();
+            const selectedMotifs = Array.from(document.querySelectorAll('#editMotifs input[name="motifs"]:checked'))
+                        .map(checkbox => checkbox.value);
+            const Adresse = document.getElementById('editAdresse').value.trim();
+            const CodePostal = document.getElementById('editCodePostal').value.trim();
+            const Ville = document.getElementById('editVille').value.trim();
+            const Email = document.getElementById('editEmail').value.trim();
+            try {
+                const apiUrl = '/changeDBValues'; 
+                const body = {
+                    reference: reference || nomNaissance,
+                    commentaire: commentaire,
+                    nomDemandeur: nomDemandeur,
+                    prenomDemandeur: prenomDemandeur,
+                    NomDestinataire: NomDestinataire,
+                    PrenomDestinataire: PrenomDestinataire,
+                    typeDemandeur: typeDemandeur,
+                    motifs: selectedMotifs,
+                    Adresse: Adresse,
+                    CodePostal: CodePostal,
+                    Ville: Ville,
+                    Email: Email
+                };
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        reference: reference, 
+                        commentaire: commentaire,
+                        nomDemandeur: nomDemandeur,
+                        prenomDemandeur: prenomDemandeur,
+                        NomDestinataire: NomDestinataire,
+                        PrenomDestinataire: PrenomDestinataire,
+                        typeDemandeur: typeDemandeur,
+                        motifs: selectedMotifs,
+                        Adresse: Adresse,
+                        CodePostal: CodePostal,
+                        Ville: Ville,
+                        Email: Email
+                    })
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+                }
+                const data = await response.json();
+                alert('Modifications mises à jour !');
+                console.log('Modifications mises à jour avec succès:', data);
+                closeEditModal();
+                location.reload();
+                
+
+                return data;
+
+            } catch (error) {
+                alert('Erreur lors de la mise à jour des modifications:' + error.message);
+                console.error('Erreur lors de la mise à jour des modifications:', error.message);
+                throw error; 
+            }
+        }
+
+
+        async function createDemande(event) {
+            if (event) event.preventDefault();
+            try {
+                const dateDemande = document.getElementById('createDateDemande').value;
+                const nomPatient = document.getElementById('createNomPatient').value.trim();
+                const prenomPatient = document.getElementById('createPrenomPatient').value.trim();
+                const ddnPatient = document.getElementById('createDdnPatient').value;
+                const nomDemandeur = document.getElementById('createNomDemandeur').value.trim();
+                const prenomDemandeur = document.getElementById('createPrenomDemandeur').value.trim();
+                const typeDemandeur = document.getElementById('createTypeDemandeur').value;
+            // const piecesDemandees = document.getElementById('createPiecesDemandees').value;
+                const selectedMotifs = Array.from(document.querySelectorAll('#createMotifs input[name="motifs"]:checked'))
+                        .map(checkbox => checkbox.value);
+                const lienAvecPatient = document.getElementById('createLienAvecPatient').value;
+                const dateSouhaitee = document.getElementById('createDateSouhaitee').value;
+                const nomDestinataire = document.getElementById('createNomDestinataire').value.trim();
+                const prenomDestinataire = document.getElementById('createPrenomDestinataire').value.trim();
+                const adresseDestinataire = document.getElementById('createAdresseDestinataire').value.trim();
+                const codePostalDestinataire = document.getElementById('createCodePostalDestinataire').value.trim();
+                const villeDestinataire = document.getElementById('createVilleDestinataire').value.trim();
+                const emailDestinataire = document.getElementById('createEmailDestinataire').value.trim();
+                const commentaire = document.getElementById('createCommentaire').value.trim();
+                const piecesDemandees = Array.from(document.querySelectorAll('#createPiecesDemandees input[name="piècesdemandes"]:checked'))
+                        .map(checkbox => checkbox.value);
+                const dateDebutSejour = document.getElementById('createDateDebutSejour').value;
+                const dateFinSejour = document.getElementById('createDateFinSejour').value;
+
+
+                // Créer l'objet de la demande
+                const demandeData = {
+                    dateDemande,
+                    nomPatient,
+                    prenomPatient,
+                    ddnPatient,
+                    nomDemandeur,
+                    prenomDemandeur,
+                    typeDemandeur,
+                    selectedMotifs,
+                    lienAvecPatient,
+                    dateSouhaitee,
+                    nomDestinataire,
+                    prenomDestinataire,
+                    adresseDestinataire,
+                    codePostalDestinataire,
+                    villeDestinataire,
+                    emailDestinataire,
+                    commentaire,
+                    piecesDemandees,
+                    dateDebutSejour,
+                    dateFinSejour
+                };
+
+                // Envoyer la requête à l'API
+                const apiUrl = '/createDemande'; 
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(demandeData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+                }
+
+            // const data = await response.json();
+                alert('Demande créée avec succès !');
+                // Fermer la modale et recharger les données
+                closeCreateModal();
+                loadDemandes();
+                location.reload();
+
+            } catch (error) {
+                alert('Erreur lors de la création de la demande : ' + error.message);
+                console.error('Erreur lors de la création de la demande:', error);
+            }
+        }
+
+        async function hideDemande() {
+                    const idDemande = document.getElementById('editReference').value;
+                    if (!idDemande) {
+                        alert('Erreur : Aucune demande sélectionnée pour la suppression.');
+                        return;
+                    }
+
+                    if (!confirm('Êtes-vous sûr de vouloir supprimer cette demande ? Cette action est irréversible.')) {
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/hideDemande', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id_demande: idDemande })
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+                        }
+
+                        alert('Demande supprimée avec succès !');
+                        closeEditModal();
+                        location.reload();
+                    } catch (error) {
+                        alert('Erreur lors de la suppression de la demande : ' + error.message);
+                        console.error('Erreur lors de la suppression de la demande:', error);
+                    }
+                }
+
+        function updateTable(demandes) {
+            const tableBody = document.getElementById('demandes-table-body');
+            tableBody.innerHTML = '';
+            if (demandes && Array.isArray(demandes) && demandes.length > 0) {
+                demandes.forEach((demande, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${demande.DATE_LIMIT ? new Date(demande.DATE_LIMIT).toLocaleDateString('fr-FR') : ''}</td>
+                        <td>${demande.DDN_PATIENT ? new Date(demande.DDN_PATIENT).toLocaleDateString('fr-FR') : ''}</td>
+                        <td>${demande.AVANCEMENT_NOM || ''}</td>
+                        <td>${demande.DEMAND_DATE ? new Date(demande.DEMAND_DATE).toLocaleDateString('fr-FR') : ''}</td>
+                        <td>${demande.PROFIL_ID || ''}</td>
+                        <td>${demande.NOM_DEMANDEUR || ''}</td>
+                        <td>${demande.PRENOM_DEMANDEUR || ''}</td>
+                        <td>${demande.COMMENTAIRE ? demande.COMMENTAIRE.replace(/<[^>]+>/g, '') : ''}</td>
+                    `;
+                    row.addEventListener('click', () => openEditModal(demande, index));
+                    tableBody.appendChild(row);
+                });
+            } else {
+                tableBody.innerHTML = '<tr><td colspan="9">Aucune donnée disponible</td></tr>';
+            }
+        } 
+                loadDemandes();
+        document.getElementById('editMotifsTrigger').addEventListener('click', function() {
+            const dropdown = document.getElementById('editMotifs');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Fermer la liste si on clique à l'extérieur
+        document.addEventListener('click', function(event) {
+            const container = document.getElementById('editMotifsContainer');
+            const dropdown = document.getElementById('editMotifs');
+            if (!container.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        // Mettre à jour le texte du trigger avec les motifs sélectionnés
+        function updateMotifsTrigger() {
+            const checkboxes = document.querySelectorAll('#editMotifs input[name="motifs"]:checked');
+            const selectedMotifs = Array.from(checkboxes).map(cb => cb.nextSibling.textContent.trim());
+            document.getElementById('editMotifsTrigger').textContent = selectedMotifs.length > 0 ? selectedMotifs.join(', ') : 'Sélectionner un motif';
+        }
+
+        document.querySelectorAll('#editMotifs input[name="motifs"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateMotifsTrigger);
+        });
+        function validateForm() {
+            // Vérifie que le champ commentaire n'est pas vide
+            const commentaire = document.getElementById('editCommentaire').value.trim();
+            if (commentaire === "") {
+                alert("Le champ commentaire ne peut pas être vide.");
+                document.getElementById('editCommentaire').focus();
+                return false;
+            }
+        const selectedMotifs = document.querySelectorAll('#editMotifs input[name="motifs"]:checked');
+                    if (!selectedMotifs.length) {
+                        alert("Veuillez sélectionner au moins un motif.");
+                        return false;
+                    }
+                    return true;
+                }
+
+                loadDemandes();
+        </script>
+        </body>
+        </html>
