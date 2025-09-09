@@ -1,7 +1,7 @@
 GES’DIM DEMANDEUR
 
  
-© Ad Valorem 2025
+© HD 2025
 Version courante: V1.1
 Historique Version
 Version	Description	Auteur	Date
