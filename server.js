@@ -59,7 +59,7 @@
   // Route pour traiter l'inscription
 
   app.post('/register', async (req, res) => {
-      const { nom, prenom, date_naissance, email, mot_de_passe, masquerDemande } = req.body;
+      const { nom, prenom, date_naissance, email, mot_de_passe } = req.body;
       const errors = [];
 
       // Validation des entrées
@@ -193,8 +193,7 @@
           locationID: 1,
           roleName: 'Utilisateur',
           locationName: 'Hôpital Principal',
-          id_demandeur: req.session.id_demandeur,
-          // isHidden: req.body.masquerDemande === 'true' ? 1 : 0
+          id_demandeur: req.session.id_demandeur
         },
         demandes: demandes, 
         errors: errors
@@ -293,6 +292,9 @@
           const CodePostal = req.body.CodePostal;
           const Ville = req.body.Ville;
           const Email = req.body.Email;
+          const nomNaissance = req.body.nomNaissance;
+          const prenomNaissance = req.body.prenomNaissance;
+          const ddnNaissance = req.body.ddnNaissance;
           if (!reference) {
               return res.status(400).json({ error: 'Le champ reference ou demandID est requis.' });
           }
@@ -302,7 +304,7 @@
           // Met à jour les champs NOTES (commentaire), Nom demandeur, Nom de naissance, Prénom et DDN du patient
           const response = await axios.get(process.env.URL_WEBSERVICE +
             'changeDBValues/DEMANDE_PATIENT/' +
-            encodeURIComponent("PRENOM_DEMANDEUR='"+prenomDemandeur.replace(/'/g, "''")+"',DESTINATAIRE='"+NomDestinataire.replace(/'/g, "''")+"',DEMANDEUR_ADR='"+Adresse.replace(/'/g, "''")+"',DEMANDEUR_CP='"+CodePostal.replace(/'/g, "''")+"',DEMANDEUR_VILLE='"+Ville.replace(/'/g, "''")+"',MAIL_DEMANDEUR='"+Email.replace(/'/g, "''")+"',PROFIL_ID='"+typeDemandeur.replace(/'/g, "''")+"',PRENOM_DESTINATAIRE='"+PrenomDestinataire.replace(/'/g, "''")+"',NOTES='"+commentaire.replace(/'/g, "''")+"',NOM_DEMANDEUR='"+nom_demandeur.replace(/'/g, "''")) + "'/" +
+            encodeURIComponent("PRENOM_DEMANDEUR='"+prenomDemandeur.replace(/'/g, "''")+"',DESTINATAIRE='"+NomDestinataire.replace(/'/g, "''")+"',NOM_NAISSANCE='"+nomNaissance.replace(/'/g, "''")+"',PRENOM='"+prenomNaissance.replace(/'/g, "''")+"',DDN_PATIENT='"+ddnNaissance.replace(/'/g, "''")+"',DEMANDEUR_ADR='"+Adresse.replace(/'/g, "''")+"',DEMANDEUR_CP='"+CodePostal.replace(/'/g, "''")+"',DEMANDEUR_VILLE='"+Ville.replace(/'/g, "''")+"',MAIL_DEMANDEUR='"+Email.replace(/'/g, "''")+"',PROFIL_ID='"+typeDemandeur.replace(/'/g, "''")+"',PRENOM_DESTINATAIRE='"+PrenomDestinataire.replace(/'/g, "''")+"',NOTES='"+commentaire.replace(/'/g, "''")+"',NOM_DEMANDEUR='"+nom_demandeur.replace(/'/g, "''")) + "'/" +
             encodeURIComponent(
               "demand_id=" + reference 
             )
@@ -508,31 +510,30 @@
     id_demande = response.data.result[0][2].complement;
           
     // Insertion dans la table DEMANDE_USERS
-  if (id_demande) {
-        const requete2 = `@id_demande=${id_demande};@id_demandeurs=${req.session.id_demandeur}`;
-        await axios.get(
-          `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertDemandeUsers/${encodeURIComponent(requete2)}`,
-          {
-            headers: { 
-              Authorization: `Basic ${btoa(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`)}`,
-            },
-          }
-        );
-      }
+        if (id_demande) {
+              const requete2 = `@id_demande=${id_demande};@id_demandeurs=${req.session.id_demandeur}`;
+              await axios.get(
+                `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertDemandeUsers/${encodeURIComponent(requete2)}`,
+                {
+                  headers: { 
+                    Authorization: `Basic ${btoa(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`)}`,
+                  },
+                }
+              );
+            }
         // Suppression des motifs existants pour cette demande
-      if (id_demande) {
-        await axios.get(
-          `${process.env.URL_WEBSERVICE}deleteFromDB/MOTIF_E_DEMANDE/DEMAND_ID=${id_demande}`,
-          {
-            headers: {
-              Authorization: `Basic ${btoa(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`)}`,
-            },
-          }
-        );
+        if (id_demande) {
+          await axios.get(
+            `${process.env.URL_WEBSERVICE}deleteFromDB/MOTIF_E_DEMANDE/DEMAND_ID=${id_demande}`,
+            {
+              headers: {
+                Authorization: `Basic ${btoa(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`)}`,
+              },
+            }
+          );
         // Insertion des nouveaux motifs
         if (selectedMotifs && Array.isArray(selectedMotifs)) {
           for (const motifId of selectedMotifs) {
-            // console.log("Insertion du motif avec ID :", motifId);
             const requeteMotif = `@table=MOTIF_E_DEMANDE;@fields=MOTIF_ID,DEMAND_ID;@values=${motifId},${id_demande}`;
             await axios.get(
               `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertWithIdentity/${encodeURIComponent(requeteMotif)}`,
@@ -560,14 +561,12 @@
             },
           }
         );
-      //console.log(`${process.env.URL_WEBSERVICE}ExecStoredProc/InsertWithIdentity/${encodeURIComponent(requeteSejour)}`);
       } else {
           console.warn('Insertion dans SEJOUR_DEMANDE ignorée : id_demande est indéfini');
           }
       //Insertion des pièces demandées
       if (piecesDemandees && Array.isArray(piecesDemandees)) {
         for (const pieceId of piecesDemandees) {
-          // console.log("Insertion de la pièce demandée avec ID :", pieceId);
           const requetePiece = `@table=DEMANDE_PIECE;@fields=PIECE_ID,DEMAND_ID;@values=${pieceId},${id_demande}`;
           await axios.get(
             `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertWithIdentity/${encodeURIComponent(requetePiece)}`,
@@ -579,7 +578,6 @@
             );
           }
         }
-    
       res.json(response.data);
     } catch (error) {
     console.error('Erreur lors de la création de la demande :', {
@@ -594,10 +592,6 @@
   });
 
 app.post('/hideDemande', noCache, async (req, res) => {
-    if (!req.session.id_demandeur) {
-        return res.status(401).json({ error: 'Utilisateur non authentifié. Veuillez vous connecter.' });
-    }
-
     try {
         const { id_demande } = req.body;
         const params = `@DEMAND_ID=${id_demande}`;
@@ -613,7 +607,6 @@ app.post('/hideDemande', noCache, async (req, res) => {
         }
         const message = response.data[0] && response.data[0][0]?.Message || 'Demande masquée avec succès.';
         return res.status(200).json({ message });
-
     } catch (error) {
         console.error('Erreur lors du masquage de la demande :', error.message);
         return res.status(500).json({ error: `Erreur lors du masquage de la demande : ${error.message}` });

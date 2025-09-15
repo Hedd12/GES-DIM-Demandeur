@@ -3,7 +3,7 @@
         <html lang="fr">
         <head>
             <meta charset="UTF-8">
-            <title>GesMedicPatient</title>
+            <title>Ges'DimDemandeur</title>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
             <link rel="stylesheet" href="css/styles.css">
             <link rel="icon" type="image/x-icon" href="./images/logo.png">
@@ -14,7 +14,7 @@
                 <aside>  
                     <div class="top">
                         <div class="logo">
-                            <h2>GesMedic<span class="primary">Patient</span></h2>
+                            <h2>Ges'Dim<span class="primary">Demandeur</span></h2>
                         </div>
                     </div>
                     <div class="bar">
@@ -55,36 +55,25 @@
 
             </div>
 
-            <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
-                <div style="background: white; padding: 15px; border-radius: 5px; width: 550px; max-height: 800px; overflow-y: auto;">
-                    <h2>Modifier la demande</h2>
-                    <form id="editForm" action="#" method="post">
-                        <label>Référence :</label>
-                        <input type="text" id="editReference" readonly><br>
-                        <label for="editMotifsTrigger">Motifs :</label>
-                        <div id="editMotifsContainer" style="padding: 8px; width: 505px; position: relative;">
-                        <div id="editMotifsTrigger" style="padding: 8px; cursor: pointer; background-color: white;width: 495px;"><i>Sélectionner un motif</i></div>
-                        <div id="editMotifs" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: white; border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;">
-                            <label><input type="checkbox" name="motifs" value="1"> Suivi médical</label><br>
-                            <label><input type="checkbox" name="motifs" value="2"> Expertise</label><br>
-                            <label><input type="checkbox" name="motifs" value="3"> Justice</label><br>
-                            <label><input type="checkbox" name="motifs" value="4"> Déménagement</label><br>
-                            <label><input type="checkbox" name="motifs" value="5"> MDPH/AAH/ALD</label><br>
-                            <label><input type="checkbox" name="motifs" value="6"> Archives</label><br>
-                            <label><input type="checkbox" name="motifs" value="7"> Personnel</label><br>
-                            <label><input type="checkbox" name="motifs" value="8"> Assurance</label><br>
-                            <label><input type="checkbox" name="motifs" value="9"> ONIAM</label><br>
-                            <label><input type="checkbox" name="motifs" value="10"> Saisie</label><br>
-                            <label><input type="checkbox" name="motifs" value="11"> TEST</label><br>
-                        </div>
-                        </div><br>
-                        <!-- <label>Avancement :</label>
-                        <input type="text" id="editAvancement" readonly><br> -->
-                        <label>Date de demande :</label>
-                        <input type="date" id="editDemandDate" readonly><br>
-                        <label>Type demandeur :</label><br>
-                        <label for="editTypeDemandeur">Sélectionner un type de demandeur</label><br>
-                        <select id="editTypeDemandeur" aria-placeholder="Sélectionner un type de demandeur" style="border-radius: 6px; padding: 8px; border: 1px solid #7a7777; width: 505px; margin-top: -40px;" required>
+         <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; border-radius: 5px; width: 1400px; max-width: 95%; max-height: 800px; overflow-y: auto;">
+        <h2>Modifier la demande</h2>
+        <form id="editForm" action="#" method="post">
+            
+            <div class="columns-container">
+                <div class="form-row">
+                <label>Référence :</label>
+                <input type="text" id="editReference" readonly>
+            </div>
+            <div class="form-row">
+                <label>Date de demande :</label>
+                <input type="date" id="editDemandDate" readonly>
+            </div>
+                <div class="column">
+                    <div class="form-row">
+                        <label>Type demandeur :</label>
+                        <label for="editTypeDemandeur">Sélectionner un type de demandeur</label>
+                        <select id="editTypeDemandeur" aria-placeholder="Sélectionner un type de demandeur" style="border-radius: 6px; padding: 8px; border: 1px solid #7a7777; width: 100%; margin-top: -10px;" required>
                             <option value="1">Patient</option>
                             <option value="2">Ayant-Droit</option>
                             <option value="3">Autorité parentale</option>
@@ -96,157 +85,278 @@
                             <option value="9">Curateur</option>
                             <option value="10">SRU (Service des Relations Usagers)</option>
                             <option value="11">Test1</option>
-                        </select><br>
+                        </select>
+                    </div>
+                    <div class="form-row">
                         <label>Nom du demandeur :</label>
-                        <input type="text" id="editNomDemandeur"><br>
+                        <input type="text" id="editNomDemandeur">
+                    </div>
+                    <div class="form-row">
                         <label>Prénom du demandeur :</label>
-                        <input type="text" id="editPrenomDemandeur"><br>
+                        <input type="text" id="editPrenomDemandeur">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="form-row">
+                        <label>Nom patient :</label>
+                        <input type="text" id="editNomPatient">
+                    </div>
+                    <div class="form-row">
+                        <label>Prénom patient :</label>
+                        <input type="text" id="editPrenomPatient">
+                    </div>
+                    <div class="form-row">
+                        <label>Date de naissance patient :</label>
+                        <input type="date" id="editDdnPatient">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="form-row">
                         <label>Nom destinataire :</label>
-                        <input type="text" id="editNomDestinataire"><br>
+                        <input type="text" id="editNomDestinataire">
+                    </div>
+                    <div class="form-row">
                         <label>Prénom destinataire :</label>
-                        <input type="text" id="editPrenomDestinataire"><br>
-                        <label>Adresse :</label><br>
-                        <input type="text" id="editAdresse" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
-                        <label>Code postal :</label><br>
-                        <input type="text" id="editCodePostal" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
-                        <label>Ville :</label><br>
-                        <input type="text" id="editVille" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
-                        <label>Email :</label><br>
-                        <input type="email" id="editEmail" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 505px;"><br>
-                        <label>Commentaire :</label>
-                        <textarea id="editCommentaire" rows="5" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;"></textarea><br>
-                        <button type="button" onclick="downloadDemandePDF()">Générer PDF</button>
-                        <button type="button" onclick="printDemande()">Imprimer</button>
-                        <button type="button" class="btn-green" onclick="saveChanges()">Enregistrer</button>
-                        <button type="button" class="btn-red" onclick="hideDemande()">Supprimer</button>
-                        <button type="button" onclick="closeEditModal()">Annuler</button>
-                    </form>
+                        <input type="text" id="editPrenomDestinataire">
+                    </div>
+                    <div class="form-row">
+                        <label>Adresse :</label>
+                        <input type="text" id="editAdresse" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 100%;">
+                    </div>
+                    <div class="form-row">
+                        <label>Code postal :</label>
+                        <input type="text" id="editCodePostal" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 100%;">
+                    </div>
+                    <div class="form-row">
+                        <label>Ville :</label>
+                        <input type="text" id="editVille" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 100%;">
+                    </div>
+                    <div class="form-row">
+                        <label>Email :</label>
+                        <input type="email" id="editEmail" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; width: 100%;">
+                    </div>
                 </div>
             </div>
-            <div id="createModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 8, 8, 0.5); justify-content: center; align-items: center;">
-                <div style="background: white; padding: 15px; border-radius: 8px; width: 550px; max-height: 800px; overflow-y: auto; ">
-                    <h2 style="color:#007bff">Créer une nouvelle demande</h2>
-                    <form id="createForm" action="/createDemande" method="post" enctype="multipart/form-data" onsubmit="createDemande(event); return false;">
-                        <label style="color:red">Date de la demande (*)</label>
-                        <input type="date" placeholder="Date demande" name="dateDemande" id="createDateDemande" required><br>
-                        <label>Nom patient :</label>
-                        <input type="text" placeholder="Nom patient" name="nomPatient" id="createNomPatient" required><br>
-                        <label>Prénom patient :</label>
-                        <input type="text" placeholder="Prénom patient" name="prenomPatient" id="createPrenomPatient" required><br>
-                        <label>Date de naissance patient :</label>
-                        <input type="date" placeholder="Date de naissance patient" name="ddnPatient" id="createDdnPatient" required><br>
+            <div class="form-row">
+                <label for="editMotifsTrigger">Motifs :</label>
+                <div id="editMotifsContainer" style="padding: 8px; width: 100%; position: relative;">
+                    <div id="editMotifsTrigger" style="padding: 8px; cursor: pointer; background-color: white; width: 100%;"></div>
+                    <div id="editMotifs" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: white; border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto;">
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="1">Suivi médical</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="2">Expertise</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="3">Justice</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="4">Déménagement</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="5">MDPH/AAH/ALD</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="6">Archives</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="7">Personnel</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="8">Assurance</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="9">ONIAM</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="10">Saisie</label>
+                        <label class="motif-label"><input type="checkbox" name="motifs" value="11">Test</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Commentaire :</label>
+                <textarea id="editCommentaire" rows="5" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 100%;"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="downloadDemandePDF()">Générer PDF</button>
+                <button type="button" class="btn-green" onclick="saveChanges()">Enregistrer</button>
+                <button type="button" class="btn-red" onclick="hideDemande()">Supprimer</button>
+                <button type="button" onclick="closeEditModal()">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>
+        <div id="createModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 8, 8, 0.5); justify-content: center; align-items: center;">
+    <div style="background: white; padding: 20px; border-radius: 8px; width: 1400px; max-width: 95%; max-height: 800px; overflow-y: auto;">
+        <h2 style="color:#007bff">Créer une nouvelle demande</h2>
+        <form id="createForm" action="/createDemande" method="post" enctype="multipart/form-data" onsubmit="createDemande(event); return false;">
+            <div class="columns-container">
+                <div class="column">
+                    <div class="form-row">
+                    <label style="color:red">Date de la demande (*)</label>
+                    <input type="date" placeholder="Date demande" name="dateDemande" id="createDateDemande" required>
+                    </div>
+                    <div class="form-row">
                         <label style="color:red">Nom du demandeur (*)</label>
-                        <input type="text" placeholder="Nom demandeur" name="nomDemandeur" id="createNomDemandeur" required><br>
+                        <input type="text" placeholder="Nom demandeur" name="nomDemandeur" id="createNomDemandeur" required>
+                    </div>
+                    <div class="form-row">
                         <label style="color:red">Prénom du demandeur (*)</label>
-                        <input type="text" placeholder="Prénom demandeur" name="prenomDemandeur" id="createPrenomDemandeur" required><br>
+                        <input type="text" placeholder="Prénom demandeur" name="prenomDemandeur" id="createPrenomDemandeur" required>
+                    </div>
+                    <div class="form-row">
                         <label style="color:red">Type de demandeur (*)</label>
                         <select id="createTypeDemandeur" style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
-                                <option value="1">Patient</option>
-                                <option value="2">Ayant droit</option>
-                                <option value="3">Autorité parentale</option>
-                                <option value="4">Médecin Expert</option>
-                                <option value="5">Avocat</option>
-                                <option value="6">OPJ</option>
-                                <option value="7">Medecin conseil</option>
-                                <option value="8">Tuteur</option>
-                                <option value="9">Curateur</option>
-                                <option value="10">SRU</option>
-                            </select> <br>
-                            <label> Pièces demandées :</label>
-                            <div id="createPiecesDemandees" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;">
-                                <label><input type="checkbox" name="piècesdemandes" value="1">Dossier Médical</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="2">Dossier Des soins infirmiers</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="3">Dossier D'anesthésie</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="4">Lettre du medecin qui est à l'origine</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="5">Les motifs d'hospitalisation</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="6">La recherche d'antécédents et de facteurs</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="7">Les conclusions de l'étude clinique initiale</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="8">Le type de prise en charge prévu</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="9">La nature des soins dispensés</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="10"> Les informations sur la démarche médicale</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="11">Les correspondances échangées</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="12">La prescription de sortie</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="13">Le compte-rendu opératoire ou d'accouchement</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="14">Le compte-rendu d'hospitalisation</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="15">Les documents personnels (non facturable)</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="16">Examen de laboratoire</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="17">ECG</label><br>
-                                <label><input type="checkbox" name="piècesdemandes" value="18">Imagerie médicale</label><br>
-                            </div> <br>
-                            <label style="color:red">Motifs (*) :</label>
-                        <div id="createMotifs" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 505px;">
-                            <label><input type="checkbox" name="motifs" value="1"> Suivi médical</label><br>
-                            <label><input type="checkbox" name="motifs" value="2"> Expertise</label><br>
-                            <label><input type="checkbox" name="motifs" value="3"> Justice</label><br>
-                            <label><input type="checkbox" name="motifs" value="4"> Déménagement</label><br>
-                            <label><input type="checkbox" name="motifs" value="5"> MDPH/AAH/ALD</label><br>
-                            <label><input type="checkbox" name="motifs" value="6"> Archives</label><br>
-                            <label><input type="checkbox" name="motifs" value="7"> Personnel</label><br>
-                            <label><input type="checkbox" name="motifs" value="8"> Assurance</label><br>
-                            <label><input type="checkbox" name="motifs" value="9"> ONIAM</label><br>
-                            <label><input type="checkbox" name="motifs" value="10"> Saisie</label><br>
-                            <label><input type="checkbox" name="motifs" value="11"> TEST</label><br>
-                        </div><br> 
-                            <label style="width: 120px;">Lien avec patient :</label>
-                                <select id="createLienAvecPatient"  style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
-                                    <option value="1">Collègue</option>
-                                    <option value="2">Frère</option>
-                                    <option value="3">Médecin</option>
-                                    <option value="4">Enfant</option>
-                                    <option value="5">Dépendant handicapé</option>
-                                    <option value="6">Compagne / Compagnon</option>
-                                    <option value="7">Contact d'urgence</option>
-                                    <option value="8">Employé</option>
-                                    <option value="9">Employeur</option>
-                                    <option value="10">Proche</option>
-                                    <option value="11">Enfant adoptif</option>
-                                    <option value="12">Ami</option>
-                                    <option value="13">Père</option>
-                                    <option value="14">Petits-enfants</option>
-                                    <option value="15">Tuteur</option>
-                                    <option value="16">Grand-parent</option>
-                                    <option value="17">Directeur</option>
-                                    <option value="18">Mère</option>
-                                    <option value="19">Enfant naturel</option>
-                                    <option value="20">Autre</option>
-                                    <option value="21">Autre adulte</option>
-                                    <option value="22">Aucun</option>
-                                    <option value="23">Propriétaire</option>
-                                    <option value="24">Parent proche</option>
-                                    <option value="25">Beau fils</option>
-                                    <option value="26">Elle/lui-même</option>
-                                    <option value="27">Frère & soeur</option>
-                                    <option value="28">Soeur</option>
-                                    <option value="29">Epoux</option>
-                                    <option value="30">Entraineur</option>
-                                    <option value="31">Inconnu</option>
-                                    <option value="32">Tutelle judiciaire</option>
-                                </select> <br>
+                            <option value="1">Patient</option>
+                            <option value="2">Ayant droit</option>
+                            <option value="3">Autorité parentale</option>
+                            <option value="4">Médecin Expert</option>
+                            <option value="5">Avocat</option>
+                            <option value="6">OPJ</option>
+                            <option value="7">Medecin conseil</option>
+                            <option value="8">Tuteur</option>
+                            <option value="9">Curateur</option>
+                            <option value="10">SRU</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label>Lien avec patient : </label>
+                        <select id="createLienAvecPatient" style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; width: 100%;">
+                            <option value="1">Collègue</option>
+                            <option value="2">Frère</option>
+                            <option value="3">Médecin</option>
+                            <option value="4">Enfant</option>
+                            <option value="5">Dépendant handicapé</option>
+                            <option value="6">Compagne / Compagnon</option>
+                            <option value="7">Contact d'urgence</option>
+                            <option value="8">Employé</option>
+                            <option value="9">Employeur</option>
+                            <option value="10">Proche</option>
+                            <option value="11">Enfant adoptif</option>
+                            <option value="12">Ami</option>
+                            <option value="13">Père</option>
+                            <option value="14">Petits-enfants</option>
+                            <option value="15">Tuteur</option>
+                            <option value="16">Grand-parent</option>
+                            <option value="17">Directeur</option>
+                            <option value="18">Mère</option>
+                            <option value="19">Enfant naturel</option>
+                            <option value="20">Autre</option>
+                            <option value="21">Autre adulte</option>
+                            <option value="22">Aucun</option>
+                            <option value="23">Propriétaire</option>
+                            <option value="24">Parent proche</option>
+                            <option value="25">Beau fils</option>
+                            <option value="26">Elle/lui-même</option>
+                            <option value="27">Frère & soeur</option>
+                            <option value="28">Soeur</option>
+                            <option value="29">Epoux</option>
+                            <option value="30">Entraineur</option>
+                            <option value="31">Inconnu</option>
+                            <option value="32">Tutelle judiciaire</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
                         <label>Date souhaitée par le demandeur:</label>
-                        <input type="date" placeholder="Date souhaitée" name="dateSouhaitee" id="createDateSouhaitee" ><br>
-                        <label style="color:red">Nom du destinataire (*) :</label>
-                        <input type="text" placeholder="Nom du destinataire" name="nomDestinataire" id="createNomDestinataire" ><br>
-                        <label style="color:red">Prénom du destinataire (*) :</label>
-                        <input type="text" placeholder="Prénom du destinataire" name="prenomDestinataire" id="createPrenomDestinataire" ><br>
-                        <label style="color:red">Adresse du destinataire (*) :</label>
-                        <input type="text" placeholder="Adresse du destinataire" name="adresseDestinataire" id="createAdresseDestinataire"><br>
-                        <label style="color:red">Code postal du destinataire (*) :</label>
-                        <input type="text" placeholder="Code postal du destinataire" name="codePostalDestinataire" id="createCodePostalDestinataire"><br>
-                        <label style="color:red">Ville du destinataire (*) :</label>
-                        <input type="text" placeholder="Ville du destinataire" name="villeDestinataire" id="createVilleDestinataire"><br>
+                        <input type="date" placeholder="Date souhaitée" name="dateSouhaitee" id="createDateSouhaitee">
+                    </div>
+                    <div class="checkbox-group">
+                        <div id="createMotifs" style="border:none;">
+                            <label><input type="checkbox" id="patientIdentiqueCheckbox" name="patientIdentique">Patient identique au demandeur</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="form-row">
+                        <label>Nom patient :</label>
+                        <input type="text" placeholder="Nom patient" name="nomPatient" id="createNomPatient" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Prénom patient :</label>
+                        <input type="text" placeholder="Prénom patient" name="prenomPatient" id="createPrenomPatient" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Date de naissance patient :</label>
+                        <input type="date" placeholder="Date de naissance patient" name="ddnPatient" id="createDdnPatient" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Date début de séjour</label>
+                        <input type="date" placeholder="Date debut de séjour" name="dateDebutSejour" id="createDateDebutSejour">
+                    </div>
+                    <div class="form-row">
+                        <label>Date fin de séjour</label>
+                        <input type="date" placeholder="Date fin de séjour" name="dateFinSejour" id="createDateFinSejour">
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="checkbox-group">
+                        <div id="createMotifs" style="border:none;">
+                            <label><input type="checkbox" id="destinataireIdentiqueCheckbox" name="destinataireIdentique">Destinataire identique au demandeur</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label style="color:red">Nom du destinataire (*)</label>
+                        <input type="text" placeholder="Nom du destinataire" name="nomDestinataire" id="createNomDestinataire">
+                    </div>
+                    <div class="form-row">
+                        <label style="color:red">Prénom du destinataire (*)</label>
+                        <input type="text" placeholder="Prénom du destinataire" name="prenomDestinataire" id="createPrenomDestinataire">
+                    </div>
+                    <div class="form-row">
+                        <label style="color:red">Adresse du destinataire (*)</label>
+                        <input type="text" placeholder="Adresse du destinataire" name="adresseDestinataire" id="createAdresseDestinataire">
+                    </div>
+                    <div class="form-row">
+                        <label style="color:red">Code postal du destinataire (*)</label>
+                        <input type="text" placeholder="Code postal du destinataire" name="codePostalDestinataire" id="createCodePostalDestinataire">
+                    </div>
+                    <div class="form-row">
+                        <label style="color:red">Ville du destinataire (*)</label>
+                        <input type="text" placeholder="Ville du destinataire" name="villeDestinataire" id="createVilleDestinataire">
+                    </div>
+                    <div class="form-row">
                         <label>Adresse e-mail :</label>
-                        <input type="email" placeholder="Adresse e-mail" name="emailDestinataire" id="createEmailDestinataire"><br>
-                        <label> Date debut de séjour</label>
-                        <input type="date" placeholder="Date debut de séjour" name="dateDebutSejour" id="createDateDebutSejour" ><br>
-                        <label> Date fin de séjour</label>
-                        <input type="date" placeholder="Date fin de séjour" name="dateFinSejour" id="createDateFinSejour" ><br>
-                        <label>Commentaires du demandeur :</label>
-                        <textarea id="createCommentaire" rows="10" style="width: 100%;" required></textarea><br>
-                        <button type="submit" class="btn-green" >Créer</button>
-                        <button type="button" onclick="closeCreateModal()">Annuler</button>
-                    </form>
+                        <input type="email" placeholder="Adresse e-mail" name="emailDestinataire" id="createEmailDestinataire">
+                    </div>
                 </div>
             </div>
+            <div class="motifs-row">
+                <div class="form-row">
+                    <label style="color:red">Motifs (*) :</label>
+                    <div id="createMotifs" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 100%;">
+                        <label><input type="checkbox" name="motifs" value="1"> Suivi médical</label><br>
+                        <label><input type="checkbox" name="motifs" value="2"> Expertise</label><br>
+                        <label><input type="checkbox" name="motifs" value="3"> Justice</label><br>
+                        <label><input type="checkbox" name="motifs" value="4"> Déménagement</label><br>
+                        <label><input type="checkbox" name="motifs" value="5"> MDPH/AAH/ALD</label><br>
+                        <label><input type="checkbox" name="motifs" value="6"> Archives</label><br>
+                        <label><input type="checkbox" name="motifs" value="7"> Personnel</label><br>
+                        <label><input type="checkbox" name="motifs" value="8"> Assurance</label><br>
+                        <label><input type="checkbox" name="motifs" value="9"> ONIAM</label><br>
+                        <label><input type="checkbox" name="motifs" value="10"> Saisie</label><br>
+                        <label><input type="checkbox" name="motifs" value="11"> TEST</label><br>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Pièces demandées :</label>
+                    <div id="createPiecesDemandees" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 100%;">
+                        <label><input type="checkbox" name="piècesdemandes" value="1">Dossier Médical</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="2">Dossier Des soins infirmiers</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="3">Dossier D'anesthésie</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="4">Lettre du medecin qui est à l'origine</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="5">Les motifs d'hospitalisation</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="6">La recherche d'antécédents et de facteurs</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="7">Les conclusions de l'étude clinique initiale</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="8">Le type de prise en charge prévu</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="9">La nature des soins dispensés</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="10"> Les informations sur la démarche médicale</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="11">Les correspondances échangées</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="12">La prescription de sortie</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="13">Le compte-rendu opératoire ou d'accouchement</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="14">Le compte-rendu d'hospitalisation</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="15">Les documents personnels (non facturable)</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="16">Examen de laboratoire</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="17">ECG</label><br>
+                        <label><input type="checkbox" name="piècesdemandes" value="18">Imagerie médicale</label><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label>Commentaire :</label>
+                <textarea id="createCommentaire" rows="5" style="border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto; width: 100%;"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-blue">Créer</button>
+                <button type="button" onclick="closeCreateModal()">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js"></script>
         
@@ -291,28 +401,31 @@
             // Remplir les champs du formulaire avec les données de la demande
             console.log(demande.DEMAND_ID);
             document.getElementById('editReference').value = demande.DEMAND_ID || '';
-            document.getElementById('editTypeDemandeur').value = demande.PROFIL_ID || '';
-            document.getElementById('editMotifs').value = demande.MOTIF_NOM || '';
-            // document.getElementById('editAvancement').value = demande.AVANCEMENT_NOM || '';
+            document.getElementById('editMotifs').value = demande.MOTIF_NOM|| '';
             document.getElementById('editDemandDate').value = demande.DEMAND_DATE ? new Date(demande.DEMAND_DATE).toISOString().split('T')[0] : '';
-            document.getElementById('editTypeDemandeur').value = demande.PROFIL_NOM || '';
+            document.getElementById('editTypeDemandeur').value = demande.PROFIL_ID || '';
             document.getElementById('editNomDemandeur').value = demande.NOM_DEMANDEUR || '';
             document.getElementById('editPrenomDemandeur').value = demande.PRENOM_DEMANDEUR || '';
-            document.getElementById('editCommentaire').value = demande.COMMENTAIRE || '';
+            document.getElementById('editCommentaire').value = demande.NOTES || '';
             document.getElementById('editNomDestinataire').value = demande.DESTINATAIRE || '';
             document.getElementById('editPrenomDestinataire').value = demande.PRENOM_DESTINATAIRE || '';
             document.getElementById('editAdresse').value = demande.DEMANDEUR_ADR || '';
             document.getElementById('editCodePostal').value = demande.DEMANDEUR_CP || '';
             document.getElementById('editVille').value = demande.DEMANDEUR_VILLE || '';
             document.getElementById('editEmail').value = demande.MAIL_DEMANDEUR || '';
-            
+            document.getElementById('editNomPatient').value = demande.NOM_NAISSANCE || '';
+            document.getElementById('editPrenomPatient').value = demande.PRENOM || '';
+            document.getElementById('editDdnPatient').value = demande.DDN_PATIENT ? new Date(demande.DDN_PATIENT).toISOString().split('T')[0] : '';
+                
+            console.log(demande.MOTIF_NOM);
+            console.log('Motifs existants (IDs):', demande.MOTIF_ID);
             
             // Handle motifs checkboxes
             const motifCheckboxes = document.querySelectorAll('#editMotifs input[name="motifs"]');
             motifCheckboxes.forEach(checkbox => {
             checkbox.checked = Array.isArray(demande.MOTIF_ID) ? demande.MOTIF_ID.includes(checkbox.value) : false;
                     });
-
+            updateMotifsTrigger();
             modal.dataset.index = index;
             // Afficher la modale
             modal.style.display = 'flex';
@@ -381,6 +494,52 @@
             printWindow.close();
         }
 
+         document.addEventListener('DOMContentLoaded', function() {
+            const patientCheckbox = document.getElementById('patientIdentiqueCheckbox');
+            if (patientCheckbox) {
+                patientCheckbox.addEventListener('change', function() {
+                    const nomDemandeurInput = document.getElementById('createNomDemandeur');
+                    const prenomDemandeurInput = document.getElementById('createPrenomDemandeur');
+                    const nomPatientInput = document.getElementById('createNomPatient');
+                    const prenomPatientInput = document.getElementById('createPrenomPatient');
+                    
+                    if (this.checked) {
+                        nomPatientInput.value = nomDemandeurInput.value;
+                        prenomPatientInput.value = prenomDemandeurInput.value;
+                        nomPatientInput.readOnly = true;
+                        prenomPatientInput.readOnly = true;
+                    } else {
+                        nomPatientInput.value = '';
+                        prenomPatientInput.value = '';
+                        nomPatientInput.readOnly = false;
+                        prenomPatientInput.readOnly = false;
+                    }
+                });
+            }
+            const destinataireCheckbox = document.getElementById('destinataireIdentiqueCheckbox');
+            if (destinataireCheckbox) {
+                destinataireCheckbox.addEventListener('change', function() {
+                    const nomDemandeurInput = document.getElementById('createNomDemandeur');
+                    const prenomDemandeurInput = document.getElementById('createPrenomDemandeur');
+                    const nomDestinataireInput = document.getElementById('createNomDestinataire');
+                    const prenomDestinataireInput = document.getElementById('createPrenomDestinataire');
+                    
+                    if (this.checked) {
+                        nomDestinataireInput.value = nomDemandeurInput.value;
+                        prenomDestinataireInput.value = prenomDemandeurInput.value;
+                        nomDestinataireInput.readOnly = true;
+                        prenomDestinataireInput.readOnly = true;
+                    } else {
+                        nomDestinataireInput.value = '';
+                        prenomDestinataireInput.value = '';
+                        nomDestinataireInput.readOnly = false;
+                        prenomDestinataireInput.readOnly = false;
+                    }
+                });
+            }
+        });
+
+        
         function downloadDemandePDF() {
             const reference = document.getElementById('editReference').value;
             const avancement = document.getElementById('editAvancement').value;
@@ -468,6 +627,9 @@
             const CodePostal = document.getElementById('editCodePostal').value.trim();
             const Ville = document.getElementById('editVille').value.trim();
             const Email = document.getElementById('editEmail').value.trim();
+            const nomNaissance = document.getElementById('editNomPatient').value.trim();
+            const prenomNaissance = document.getElementById('editPrenomPatient').value.trim();
+            const ddnNaissance = document.getElementById('editDdnPatient').value
             try {
                 const apiUrl = '/changeDBValues'; 
                 const body = {
@@ -482,7 +644,10 @@
                     Adresse: Adresse,
                     CodePostal: CodePostal,
                     Ville: Ville,
-                    Email: Email
+                    Email: Email,
+                    nomNaissance: nomNaissance,
+                    prenomNaissance: prenomNaissance,
+                    ddnNaissance: ddnNaissance
                 };
                 const response = await fetch(apiUrl, {
                     method: 'POST',
@@ -501,7 +666,10 @@
                         Adresse: Adresse,
                         CodePostal: CodePostal,
                         Ville: Ville,
-                        Email: Email
+                        Email: Email,
+                        nomNaissance: nomNaissance,
+                        prenomNaissance: prenomNaissance,
+                        ddnNaissance: ddnNaissance
                     })
                 });
                 if (!response.ok) {
@@ -535,7 +703,6 @@
                 const nomDemandeur = document.getElementById('createNomDemandeur').value.trim();
                 const prenomDemandeur = document.getElementById('createPrenomDemandeur').value.trim();
                 const typeDemandeur = document.getElementById('createTypeDemandeur').value;
-            // const piecesDemandees = document.getElementById('createPiecesDemandees').value;
                 const selectedMotifs = Array.from(document.querySelectorAll('#createMotifs input[name="motifs"]:checked'))
                         .map(checkbox => checkbox.value);
                 const lienAvecPatient = document.getElementById('createLienAvecPatient').value;
@@ -667,7 +834,6 @@
             const dropdown = document.getElementById('editMotifs');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         });
-
         // Fermer la liste si on clique à l'extérieur
         document.addEventListener('click', function(event) {
             const container = document.getElementById('editMotifsContainer');
@@ -680,7 +846,7 @@
         function updateMotifsTrigger() {
             const checkboxes = document.querySelectorAll('#editMotifs input[name="motifs"]:checked');
             const selectedMotifs = Array.from(checkboxes).map(cb => cb.nextSibling.textContent.trim());
-            document.getElementById('editMotifsTrigger').textContent = selectedMotifs.length > 0 ? selectedMotifs.join(', ') : 'Sélectionner un motif';
+            document.getElementById('editMotifsTrigger').textContent = selectedMotifs.length > 0 ? selectedMotifs.join(', ') : '';
         }
 
         document.querySelectorAll('#editMotifs input[name="motifs"]').forEach(checkbox => {
