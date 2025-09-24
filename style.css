@@ -1,0 +1,482 @@
+  /* google font   */
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+  /* root color  */
+  :root{
+    --blue:#0188df;
+    --black:#444d53;
+    --wight:#fff;
+  }
+
+  /* custom css  */
+  *{
+    font-family: "Roboto", sans-serif;
+    margin: 0; padding: 0;
+    text-decoration: none;
+    outline: none;
+    box-sizing: border-box;
+    transition: all linear .2s;
+  
+  }
+
+  html{
+    font-size: 62.5%;
+    overflow-x: hidden;
+    
+  }
+.sidebar-button {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+.sidebar-button:hover {
+    background-color: #0753e0;
+}
+ /* button  */
+ .button{
+    height: 3.5rem;
+    width: 15rem;
+    background: var(--blue);
+    color: var(--wight);
+    font-size: 1.7rem;
+    text-transform: capitalize;
+    border-radius: .5rem;
+    cursor: pointer;
+    margin: 1rem auto;
+    border: .1rem solid var(--blue);
+    display: block;
+    line-height: 3.5rem;
+ }
+
+ .button:hover{
+    border: .1rem solid var(--blue);
+    background: var(--wight);
+    color: var(--blue);
+    letter-spacing: .2rem;
+ }
+
+ /* heading  */
+.heading{
+    text-align: center;
+    font-size: 4rem;
+    padding: 1rem;
+    padding-top: 8rem;
+    color: var(--blue);
+    letter-spacing: .1rem;
+}
+ /* title  */
+.title{
+    text-align: center;
+    padding: 0rem 1rem;
+    font-size: 2.5rem;
+    color: var(--black);
+    font-weight: 300;
+}
+
+
+
+  /* header navbar section start  */
+
+  header{
+    width: 96%;
+    background: var(--wight);
+    position:fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    z-index: 1000;
+  }
+
+  /* logo name  */
+  header a{
+    color: var(--black);
+  }
+
+  header a:hover{
+    color: var(--blue);
+  }
+
+  header .logo{
+    font-size: 3rem;
+  }
+
+  header .logo span{
+    color: var(--blue);
+  }
+
+  /* navbar link  */
+  header .navbar ul{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+  }
+
+  header .navbar ul li{
+    margin: 0 1rem;
+  }
+
+  header .navbar ul li a{
+    font-size: 2rem;
+    color: var(--black);
+  }
+
+  header .navbar ul li a:hover{
+    color: var(--blue);
+  }
+
+ header .fa-bars{
+    font-size: 3rem;
+    color: var(--blue);
+    cursor: pointer;
+    display: none;
+ }
+
+ header .fa-times{
+    transform: rotate(180deg);
+ }
+
+
+ .header-active{
+    top: 0;
+    width: 100%;
+    box-shadow: .1rem .3rem rgba(0,0,0,.3);
+ }
+
+.tt{
+  color: var(--blue);
+}
+
+  /* header navbar section end  */
+
+  /* home section start  */
+
+  .home{
+    min-height: 100vh;
+    padding-top: 10rem;
+  }
+
+  .home .row{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 85%;
+    margin: 0 auto;
+  }
+
+  /* home images  */
+  .home .row .images img{
+    height: 75vh; 
+  }
+
+  /* home heading  */
+  .home .content h1{
+    font-size: 4rem;
+    color: var(--black);
+  }
+
+  .home .content h1 span{
+    color: var(--blue);
+  }
+
+  .home .content p{
+    font-size: 1.9rem;
+    color: var(--black);
+  }
+  /* home section end  *
+  /* media query  */
+
+  @media (max-width:768px){
+
+    html{
+        font-size: 55%;
+    }
+
+    header .fa-bars{
+        display: block;
+    }
+    
+    header .navbar{
+        position: fixed;
+        top: -100rem; left: 0;
+        width: 100%;
+        background: var(--wight);
+        opacity: 0;
+    }
+
+    header .navbar ul{
+        flex-flow: column;
+        padding: 2rem 0;
+    }
+
+    header .navbar ul li{
+        margin: 1rem 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    header .navbar ul li a{
+        font-size: 3rem;
+        display: block;
+    }
+
+    header .nav-toggle{
+        top: 5.5rem;
+        opacity: 1;
+    }
+
+    /* home media query  */
+
+    .home .row{
+        flex-flow: column;
+    }
+
+    .home .row .content{
+        text-align: center;
+    }
+
+    /* home images  */
+    .home .row .images img{
+        width: 100%;
+    }
+
+  /* about media query  */
+   .about .box-container .box{
+    flex-flow: column;
+    width: 90%;
+   }
+
+   .about .box-container .box:nth-child(even){
+    flex-flow: column;
+   }
+
+   .about .box-container .box .images{
+    width: 100%;
+   }
+
+   .about .box-container .box .content{
+    width: 100%;
+   }
+   
+   /* contact form  */
+   .contact .row{
+    flex-flow: column;
+   }
+
+   .contact .row .images img{
+    height: 50vh;
+    width: 90vw;
+   }
+
+   .contact .row .form-container{
+    width: 90%;
+    padding: 0;
+   }
+  }
+  /* Réinitialisation et styles de base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Style du conteneur principal */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Fond dégradé */
+  padding: 20px;
+  margin-right: 50px;
+}
+
+/* Style du formulaire */
+.form-box.register {
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  margin-right: 50px;/* Décalage légèrement à droite */
+  margin-left: 50px; /* Ajustez cette valeur pour plus ou moins de décalage */
+}
+
+/* Titre du formulaire */
+.form-box h2 {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Style des champs de saisie */
+.input-box {
+  position: relative;
+  margin-bottom: 35px;
+ 
+}
+
+.input-box input {
+  width: 100%;
+  padding: 12px 50px 12px 15px;
+  font-size: 2rem;
+  color: #333;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  background: transparent;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+  border-color: #4a90e2; /* Bleu pour l'interaction */
+}
+
+/* Style des labels */
+.input-box label {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #666;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -5px;
+  font-size: 0.85rem;
+  color: #4a90e2;
+}
+
+/* Style des icônes */
+.input-box i {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.input-box input:focus ~ i,
+.input-box input:valid ~ i {
+  color: #4a90e2;
+}
+
+/* Style du bouton */
+.input-box button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  color: #fff;
+  background: #4a90e2;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.input-box button:hover {
+  background: #357abd;
+}
+
+/* Style du lien de connexion */
+.logreg-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.logreg-link p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.logreg-link a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.logreg-link a:hover {
+  color: #357abd;
+  text-decoration: underline;
+}
+
+/* Animation existante */
+.animation {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.5s ease forwards;
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+@keyframes fadeIn {
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .form-box.register {
+      margin-left: 20px; /* Réduire le décalage à droite sur petits écrans */
+      padding: 30px;
+      margin: 0 auto;
+      max-width: 90%;
+
+  }
+
+  .form-box h2 {
+      font-size: 1.8rem;
+  }
+
+  .input-box input {
+      font-size: 0.95rem;
+  }
+
+  .input-box label {
+      font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-box.register {
+      margin-left: 0; /* Supprimer le décalage sur très petits écrans */
+      padding: 20px;
+  }
+
+  .form-box h2 {
+      font-size: 1.5rem;
+  }
+
+  .input-box input {
+      padding: 10px 45px 10px 10px;
+  }
+
+  .input-box i {
+      right: 10px;
+  }
+}

@@ -160,6 +160,7 @@
     UNEXPECTED_RESPONSE: 'Réponse inattendue du service'
   };
 
+  
   // Route pour la page dashboard
   app.get('/dashboard', noCache, async (req, res) => {
       // Vérifier si l'utilisateur est authentifié

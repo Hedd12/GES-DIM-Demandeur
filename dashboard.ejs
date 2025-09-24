@@ -56,13 +56,13 @@
             </div>
 
          <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
-    <div style="background: white; padding: 20px; border-radius: 5px; width: 1400px; max-width: 95%; max-height: 800px; overflow-y: auto;">
+         <div style="background: white; padding: 20px; border-radius: 5px; width: 1400px; max-width: 95%; max-height: 800px; overflow-y: auto;">
         <h2>Modifier la demande</h2>
         <form id="editForm" action="#" method="post">
-            
             <div class="columns-container">
-                <div class="form-row">
-                <label>Référence :</label>
+                <div class="column">
+                    <div class="form-row">
+                        <label>Référence :</label>
                 <input type="text" id="editReference" readonly>
             </div>
             <div class="form-row">
@@ -87,6 +87,7 @@
                             <option value="11">Test1</option>
                         </select>
                     </div>
+                </div>
                     <div class="form-row">
                         <label>Nom du demandeur :</label>
                         <input type="text" id="editNomDemandeur">
@@ -140,19 +141,22 @@
             <div class="form-row">
                 <label for="editMotifsTrigger">Motifs :</label>
                 <div id="editMotifsContainer" style="padding: 8px; width: 100%; position: relative;">
+                     <div id="selectedMotifs" style="margin-bottom: 6px; font-weight: bold; color: #333;">
+                     </div>
                     <div id="editMotifsTrigger" style="padding: 8px; cursor: pointer; background-color: white; width: 100%;"></div>
                     <div id="editMotifs" style="display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: white; border: 1px solid #7a7777; border-radius: 6px; padding: 8px; max-height: 150px; overflow-y: auto;">
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="1">Suivi médical</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="2">Expertise</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="3">Justice</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="4">Déménagement</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="5">MDPH/AAH/ALD</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="6">Archives</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="7">Personnel</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="8">Assurance</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="9">ONIAM</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="10">Saisie</label>
-                        <label class="motif-label"><input type="checkbox" name="motifs" value="11">Test</label>
+                        <label></label>
+                        <label><input type="checkbox" name="motifs" value="1">Suivi médical</label>
+                        <label><input type="checkbox" name="motifs" value="2">Expertise</label>
+                        <label><input type="checkbox" name="motifs" value="3">Justice</label>
+                        <label><input type="checkbox" name="motifs" value="4">Déménagement</label>
+                        <label><input type="checkbox" name="motifs" value="5">MDPH/AAH/ALD</label>
+                        <label><input type="checkbox" name="motifs" value="6">Archives</label>
+                        <label><input type="checkbox" name="motifs" value="7">Personnel</label>
+                        <label><input type="checkbox" name="motifs" value="8">Assurance</label>
+                        <label><input type="checkbox" name="motifs" value="9">ONIAM</label>
+                        <label><input type="checkbox" name="motifs" value="10">Saisie</label>
+                        <label><input type="checkbox" name="motifs" value="11">Test</label>
                     </div>
                 </div>
             </div>
@@ -248,7 +252,7 @@
                             <label><input type="checkbox" id="patientIdentiqueCheckbox" name="patientIdentique">Patient identique au demandeur</label>
                         </div>
                     </div>
-                </div>
+                 </div>
                 <div class="column">
                     <div class="form-row">
                         <label>Nom patient :</label>
@@ -395,41 +399,48 @@
                     
                     }
                 }
-            function openEditModal(demande, index) {
-            // Récupérer la modale
-            const modal = document.getElementById('editModal');
-            // Remplir les champs du formulaire avec les données de la demande
-            console.log(demande.DEMAND_ID);
-            document.getElementById('editReference').value = demande.DEMAND_ID || '';
-            document.getElementById('editMotifs').value = demande.MOTIF_NOM|| '';
-            document.getElementById('editDemandDate').value = demande.DEMAND_DATE ? new Date(demande.DEMAND_DATE).toISOString().split('T')[0] : '';
-            document.getElementById('editTypeDemandeur').value = demande.PROFIL_ID || '';
-            document.getElementById('editNomDemandeur').value = demande.NOM_DEMANDEUR || '';
-            document.getElementById('editPrenomDemandeur').value = demande.PRENOM_DEMANDEUR || '';
-            document.getElementById('editCommentaire').value = demande.NOTES || '';
-            document.getElementById('editNomDestinataire').value = demande.DESTINATAIRE || '';
-            document.getElementById('editPrenomDestinataire').value = demande.PRENOM_DESTINATAIRE || '';
-            document.getElementById('editAdresse').value = demande.DEMANDEUR_ADR || '';
-            document.getElementById('editCodePostal').value = demande.DEMANDEUR_CP || '';
-            document.getElementById('editVille').value = demande.DEMANDEUR_VILLE || '';
-            document.getElementById('editEmail').value = demande.MAIL_DEMANDEUR || '';
-            document.getElementById('editNomPatient').value = demande.NOM_NAISSANCE || '';
-            document.getElementById('editPrenomPatient').value = demande.PRENOM || '';
-            document.getElementById('editDdnPatient').value = demande.DDN_PATIENT ? new Date(demande.DDN_PATIENT).toISOString().split('T')[0] : '';
-                
-            console.log(demande.MOTIF_NOM);
-            console.log('Motifs existants (IDs):', demande.MOTIF_ID);
-            
-            // Handle motifs checkboxes
-            const motifCheckboxes = document.querySelectorAll('#editMotifs input[name="motifs"]');
-            motifCheckboxes.forEach(checkbox => {
-            checkbox.checked = Array.isArray(demande.MOTIF_ID) ? demande.MOTIF_ID.includes(checkbox.value) : false;
-                    });
-            updateMotifsTrigger();
-            modal.dataset.index = index;
-            // Afficher la modale
-            modal.style.display = 'flex';
-        }
+          function openEditModal(demande, index) {
+    const modal = document.getElementById('editModal');
+
+    document.getElementById('editReference').value = demande.DEMAND_ID || '';
+    document.getElementById('editDemandDate').value = demande.DEMAND_DATE ? new Date(demande.DEMAND_DATE).toISOString().split('T')[0] : '';
+    document.getElementById('editTypeDemandeur').value = demande.PROFIL_ID || '';
+    document.getElementById('editNomDemandeur').value = demande.NOM_DEMANDEUR || '';
+    document.getElementById('editPrenomDemandeur').value = demande.PRENOM_DEMANDEUR || '';
+    document.getElementById('editCommentaire').value = demande.NOTES || '';
+    document.getElementById('editNomDestinataire').value = demande.DESTINATAIRE || '';
+    document.getElementById('editPrenomDestinataire').value = demande.PRENOM_DESTINATAIRE || '';
+    document.getElementById('editAdresse').value = demande.DEMANDEUR_ADR || '';
+    document.getElementById('editCodePostal').value = demande.DEMANDEUR_CP || '';
+    document.getElementById('editVille').value = demande.DEMANDEUR_VILLE || '';
+    document.getElementById('editEmail').value = demande.MAIL_DEMANDEUR || '';
+    document.getElementById('editNomPatient').value = demande.NOM_NAISSANCE || '';
+    document.getElementById('editPrenomPatient').value = demande.PRENOM || '';
+    document.getElementById('editDdnPatient').value = demande.DDN_PATIENT ? new Date(demande.DDN_PATIENT).toISOString().split('T')[0] : '';
+
+    console.log("Motifs existants:", demande.MOTIF_ID, demande.MOTIF_NOM);
+
+    const checkboxes = document.querySelectorAll('#editMotifs input[type="checkbox"]');
+
+    // Transformer la chaîne "3,4,5" en [3,4,5]
+    let motifsIds = [];
+    if (typeof demande.MOTIF_ID === "string") {
+        motifsIds = demande.MOTIF_ID.split(",").map(id => parseInt(id.trim(), 10));
+    } else if (typeof demande.MOTIF_ID === "number") {
+        motifsIds = [demande.MOTIF_ID];
+    } else if (Array.isArray(demande.MOTIF_ID)) {
+        motifsIds = demande.MOTIF_ID.map(id => parseInt(id, 10));
+    }
+    checkboxes.forEach(cb => {
+        cb.checked = motifsIds.includes(parseInt(cb.value, 10));
+    });
+
+    updateMotifsTrigger();
+
+    modal.dataset.index = index;
+    modal.style.display = 'flex';
+
+}
 
         function openCreateModal() {
             // Réinitialiser le formulaire
@@ -758,10 +769,7 @@
                     const errorData = await response.json();
                     throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
                 }
-
-            // const data = await response.json();
                 alert('Demande créée avec succès !');
-                // Fermer la modale et recharger les données
                 closeCreateModal();
                 loadDemandes();
                 location.reload();
@@ -834,7 +842,6 @@
             const dropdown = document.getElementById('editMotifs');
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         });
-        // Fermer la liste si on clique à l'extérieur
         document.addEventListener('click', function(event) {
             const container = document.getElementById('editMotifsContainer');
             const dropdown = document.getElementById('editMotifs');
@@ -842,18 +849,19 @@
                 dropdown.style.display = 'none';
             }
         });
-        // Mettre à jour le texte du trigger avec les motifs sélectionnés
-        function updateMotifsTrigger() {
-            const checkboxes = document.querySelectorAll('#editMotifs input[name="motifs"]:checked');
-            const selectedMotifs = Array.from(checkboxes).map(cb => cb.nextSibling.textContent.trim());
-            document.getElementById('editMotifsTrigger').textContent = selectedMotifs.length > 0 ? selectedMotifs.join(', ') : '';
-        }
+     function updateMotifsTrigger() {
+    const checkboxes = document.querySelectorAll('#editMotifs input[name="motifs"]:checked');
+    const selectedMotifs = Array.from(checkboxes).map(cb => cb.parentElement.textContent.trim());
+    console.log("Motifs cochés:", selectedMotifs); 
+    document.getElementById('editMotifsTrigger').textContent =
+        selectedMotifs.length > 0 ? selectedMotifs.join(', ') : 'Aucun motif sélectionné';
+}
+
 
         document.querySelectorAll('#editMotifs input[name="motifs"]').forEach(checkbox => {
             checkbox.addEventListener('change', updateMotifsTrigger);
         });
         function validateForm() {
-            // Vérifie que le champ commentaire n'est pas vide
             const commentaire = document.getElementById('editCommentaire').value.trim();
             if (commentaire === "") {
                 alert("Le champ commentaire ne peut pas être vide.");
@@ -871,4 +879,4 @@
                 loadDemandes();
         </script>
         </body>
-        </html>
+        </html> 
