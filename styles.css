@@ -367,6 +367,11 @@ b {
   gap: 30px;
   margin: 20px 0;
 }
+#editModal .columns-container {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+}
 
 #createForm .column {
   flex: 1;
@@ -375,8 +380,23 @@ b {
   border-radius: 6px;
   background: var(--clr-light);
 }
+#editModal .column {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: var(--clr-light);
+}
+
 
 #createForm .column h3 {
+  margin-top: 0;
+  color: var(--clr-primary);
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  font-size: 1.2rem;
+}
+#editModal .column h3 {
   margin-top: 0;
   color: var(--clr-primary);
   border-bottom: 1px solid #ddd;
@@ -392,6 +412,12 @@ b {
 }
 
 #createForm .form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+#editModal .form-actions {
   display: flex;
   justify-content: center;
   gap: 15px;

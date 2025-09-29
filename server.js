@@ -241,7 +241,7 @@
       
       // Définir id_demandeur avec user.id ou user.id_demandeur
       const id_demandeur = user.id_demandeur || user.id;
-
+      
       req.session.regenerate((err) => {
         if (err) {
           errors.push('Erreur de session');
