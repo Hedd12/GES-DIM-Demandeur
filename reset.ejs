@@ -1,0 +1,103 @@
+        <!DOCTYPE html>
+        <html lang="fr">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Réinitialiser</title>
+            <link rel="icon" type="image/x-icon" href="./images/logo.png">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+            <link rel="stylesheet" href="./css/style.css">
+            <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        </head>
+
+        <body>
+            <header>
+                <a href="#" class="logo"><span>G</span>es<span>M</span>edic<span>P</span>atient</a>
+            </header>
+            <section id="home" class="home">
+
+                <div class="row">
+                    <div class="images">
+                        <img src="./images/home.png" alt="">
+                    </div>
+                    <div class="wrapper">
+                        <div class="form-box register">
+                            <h2 class="animation" style="--i:17; --j:0;">REINITIALISER LE MOT DE PASSE</h2>
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                        <% if (typeof errors !== 'undefined' && errors && errors.length > 0){ %>
+                                <div class="error-messages">
+                                    <ul>
+                                        <% errors.forEach(error => { %>
+                                            <li><%= error %></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                            <% } %>   
+                        <form action="/reset-password" method="POST">
+            <div class="input-box animation">
+                <input type="email" name="email" required>
+                <label>Email</label>
+                <i class='bx bxs-envelope'></i>
+            </div>
+              <div class="input-box animation">
+                <input type="password" name="mot_de_passe" required>
+                <label>Ancien mot de passe</label>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="input-box animation">
+                <input type="password" name="nouveau_mot_de_passe" required>
+                <label>Nouveau mot de passe</label>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="input-box animation">
+                <input type="password" name="confirmation_mot_de_passe" required>
+                <label>Confirmer le nouveau mot de passe</label>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                <button type="submit" style="background: #106de0; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                    Réinitialiser mon mot de passe
+                </button>
+            </div>
+            <div class="logreg-link animation" >
+            <p> <a href="/connexion" class="login-link">Connectez-vous</a></p>
+            </div>
+            </form>
+            </div>
+            </div>                                          
+                    
+                </div>
+            </section>
+        <script>
+           
+        document.getElementById('resetPasswordBtn').addEventListener('click', async function() {
+            const newPassword = prompt("Entrez votre nouveau mot de passe :");
+            if (!newPassword || newPassword.length < 8) {
+                alert("Le mot de passe doit contenir au moins 8 caractères.");
+                return;
+            }
+            try {
+                const response = await fetch('/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ newPassword })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Mot de passe réinitialisé avec succès !");
+                } else {
+                    alert(data.error || "Erreur lors de la réinitialisation.");
+                }
+            } catch (err) {
+                alert("Erreur lors de la réinitialisation.");
+            }
+        });
+        document.getElementById('showPassword').addEventListener('change', function() {
+        const pwd = document.getElementById('mot_de_passe');
+        pwd.type = this.checked ? 'text' : 'password';
+    });
+        </script>
+        </body>
+
+        </html>

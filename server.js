@@ -8,6 +8,8 @@
   const validator = require('validator');
   const sql = require('mssql');
   const { error } = require('console');
+  const nodemailer = require('nodemailer');
+  const crypto = require('crypto');
   var router = express.Router();
   dotenv.config();
 
@@ -88,56 +90,110 @@
       if (errors.length > 0) {
           return res.render('register', { errors });
       }
+  
+       try {
+    // Générer un token unique
+    const emailToken = crypto.randomBytes(32).toString('hex');
 
-      try {
-          // Uniformisation de l'encodage de l'en-tête Authorization
-          const authHeader = `Basic ${Buffer.from(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`).toString('base64')}`;
+    // inserer un patient 
+    const insert = `@nom=${nom};@prenom=${prenom};@date_naissance=${date_naissance};@email=${email};@mot_de_passe=${mot_de_passe};@email_token=${emailToken};@Result=1`;
+    const patientResponse = await axios.get(
+        `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertPatient/${encodeURIComponent(insert)}`,
+        {
+            headers: {
+                Authorization: `Basic ${Buffer.from(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`).toString('base64')}`,
+                'Content-Type': 'application/json',
+            },
+        }
+    );
+    if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        throw new Error("Configuration SMTP manquante dans le fichier .env");
+    }
 
-          // console.log('URL appelée pour InsertPatient:', `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertPatient`);
-          console.log('Données envoyées à InsertPatient:', {
-              nom,
-              prenom: prenom.trim(),
-              email: validator.normalizeEmail(email),
-              date_naissance,
-              mot_de_passe
-          });
-        
-          // Insérer le patient 
-        const insert = `@nom=${nom};@prenom=${prenom};@date_naissance=${date_naissance};@email=${email};@mot_de_passe=${mot_de_passe};@Result=1`;
-        //  console.log('URL complète:', `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertPatient/${encodeURIComponent(insert)}`);
-      const patientResponse = await axios.get(
-      `${process.env.URL_WEBSERVICE}ExecStoredProc/InsertPatient/${encodeURIComponent(insert)}`,
-      {
-          headers: {
-          Authorization: `Basic ${Buffer.from(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`).toString('base64')}`,
-          'Content-Type': 'application/json',
-        },
-      }
-  );
-          return res.redirect('/connexion');
-      } catch (error) {
-          console.error('Erreur d\'inscription:', {
-              message: error.message,
-              stack: error.stack,
-              code: error.code,
-              status: error.response?.status,
-              responseData: error.response?.data || 'Aucune donnée de réponse',
-              headers: error.response?.headers
-          });
-          let errorMessage = 'Erreur lors de la création du patient.';
-          if (error.response?.status === 500) {
-              errorMessage = error.response?.data?.error || 'Erreur interne du serveur';
-          } else if (error.response?.status === 404) {
-              errorMessage = 'Méthode ou endpoint non trouvé sur le serveur.';
-          } else if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
-              errorMessage = 'Le service web est injoignable.';
-          } else if (error.response?.status === 401) {
-              errorMessage = 'Échec de l\'authentification : identifiants incorrects.';
-          }
-          errors.push(errorMessage);
-          return res.render('connexion', { errors }); 
-      }
+   // Configuration SMTP dynamique
+    const mailOptions = {};
+    if (process.env.SMTP_SERVICE) mailOptions.service = process.env.SMTP_SERVICE;
+    mailOptions.host = process.env.SMTP_HOST;
+    mailOptions.port = Number(process.env.SMTP_PORT);
+    mailOptions.secure = process.env.SMTP_SECURE === 'true';
+    if (mailOptions.secure) {
+      mailOptions.auth = {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      };
+    }
+    mailOptions.tls = {
+      maxVersion: process.env.SMTP_TLS_MAXVERSION || 'TLSv1.2',
+      rejectUnauthorized: process.env.SMTP_TLS_REJECTUNAUTHORIZED === 'true'
+    };
+    if (process.env.SMTP_SERVERNAME) mailOptions.servername = process.env.SMTP_SERVERNAME;
+
+    const transporter = nodemailer.createTransport(mailOptions);
+
+    // Générer le lien de confirmation
+    const confirmUrl = `http://${req.headers.host}/confirm-email?token=${emailToken}&email=${encodeURIComponent(email)}`;
+    await transporter.sendMail({
+      from: `"Ges'Dim" <${process.env.SMTP_USER}>`,
+      to: email,
+      subject: 'Confirmation de votre adresse e-mail',
+      html: `
+        <p>Bonjour ${prenom},</p>
+        <p>Merci de vous être inscrit sur GesMedicPatient.</p>
+        <p>Pour finaliser votre inscription, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous :</p>
+        <a href="${confirmUrl}" style="background:#106de0;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;">Confirmer mon adresse e-mail</a>
+        <p style="color:#888;font-size:12px;">Cordialement,<br>L’équipe GesMedicPatient</p>`
+    });
+
+    // Redirection vers la page de succès
+    res.redirect('/inscription_reussie');
+} catch (error) {
+    console.error('Erreur d\'inscription:', {
+        message: error.message,
+        stack: error.stack,
+        code: error.code,
+        status: error.response?.status,
+        responseData: error.response?.data || 'Aucune donnée de réponse',
+        headers: error.response?.headers
+    });
+    let errorMessage = 'Erreur lors de la création du patient.';
+    if (error.response?.status === 500) {
+        errorMessage = error.response?.data?.error || 'Erreur interne du serveur';
+    } else if (error.response?.status === 404) {
+        errorMessage = 'Méthode ou endpoint non trouvé sur le serveur.';
+    } else if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
+        errorMessage = 'Le service web ou le serveur SMTP est injoignable.';
+    } else if (error.response?.status === 401) {
+        errorMessage = 'Échec de l\'authentification : identifiants incorrects.';
+    }
+    errors.push(errorMessage);
+    return res.render('connexion', { errors }); 
+};
   });
+// Route pour confirmer l'adresse e-mail
+app.get('/confirm-email', async (req, res) => {
+  const { token, email } = req.query;
+  if (!token || !email) {
+    return res.render('error', { message: 'Lien de confirmation invalide.', error: null });
+  }
+
+  try {
+    // Mettre à jour la base de données pour marquer l'e-mail comme vérifié
+    const where = `email='${email.replace(/'/g, "''")}' AND email_token='${token}'`;
+    const champs = `email_verified=1,email_token=''`;
+    const url = `${process.env.URL_WEBSERVICE}changeDBValues/USERS_Patient/${encodeURIComponent(champs)}/${encodeURIComponent(where)}`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`).toString('base64')}`
+      }
+    });
+
+    // Rendre une page de succès
+    res.render('connexion', { message: 'Votre adresse e-mail a été confirmée. Vous pouvez maintenant vous connecter.' });
+  } catch (err) {
+    console.error('Erreur lors de la confirmation:', err);
+    res.render('error', { message: 'Erreur lors de la confirmation de l\'adresse e-mail.', error: null });
+  }
+});
 
   // Route pour la page succès
   app.get('/inscription_reussie', (req, res) => {
@@ -147,6 +203,9 @@
   // Route pour la page de connexion 
   app.get('/connexion', async(req, res) => {
       res.render('connexion');
+  });
+   app.get('/reset', async(req, res) => {
+      res.render('reset');
   });
 
   // Constantes pour les messages d'erreur
@@ -189,7 +248,7 @@
   res.render('dashboard', {
         Settings: {
           email: req.session.email,
-          userName: 'Utilisateur',
+          userName:  req.session.user?.nom + ' ' + req.session.user?.prenom,
           role: 10,
           locationID: 1,
           roleName: 'Utilisateur',
@@ -215,7 +274,6 @@
     if (errors.length > 0) {
       return res.render('connexion', { errors });
     }
-
     try {
       const webServiceUrl = `${process.env.URL_WEBSERVICE}ExecStoredProc/CheckUserLogin/${encodeURIComponent(`@email=${email};@mot_de_passe=${mot_de_passe}`)}`;
       const response = await axios.get(webServiceUrl, {
@@ -241,7 +299,7 @@
       
       // Définir id_demandeur avec user.id ou user.id_demandeur
       const id_demandeur = user.id_demandeur || user.id;
-      
+
       req.session.regenerate((err) => {
         if (err) {
           errors.push('Erreur de session');
@@ -350,6 +408,74 @@
       }
   });
 
+app.post('/reset-password', async (req, res) => {
+    const { email, mot_de_passe, nouveau_mot_de_passe, confirmation_mot_de_passe } = req.body;
+    const errors = [];
+
+    if (!email || !validator.isEmail(email)) {
+        errors.push("L'adresse e-mail est invalide.");
+    }
+    if (!mot_de_passe || mot_de_passe.length < 8) {
+        errors.push("L'ancien mot de passe ne correspond pas.");
+    }
+    if (!nouveau_mot_de_passe || nouveau_mot_de_passe.length < 8) {
+        errors.push("Le nouveau mot de passe doit contenir au moins 8 caractères.");
+    }
+    if (nouveau_mot_de_passe !== confirmation_mot_de_passe) {
+        errors.push("La confirmation du nouveau mot de passe ne correspond pas.");
+    }
+    if (mot_de_passe === nouveau_mot_de_passe) {
+        errors.push("Le nouveau mot de passe doit être différent de l'ancien.");
+    }
+
+    if (errors.length > 0) {
+        return res.render('reset', { errors });
+    }
+
+    try {
+        // Vérifie l'ancien mot de passe
+        const checkUrl = `${process.env.URL_WEBSERVICE}ExecStoredProc/CheckUserLogin/${encodeURIComponent(`@email=${email};@mot_de_passe=${mot_de_passe}`)}`;
+        const checkResponse = await axios.get(checkUrl, {
+            headers: {
+                Authorization: `Basic ${Buffer.from(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`).toString('base64')}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        const result = checkResponse.data?.result;
+        console.log('Résultat CheckUserLogin:', JSON.stringify(result));
+     let userFound = false;
+if (Array.isArray(result) && result.length > 0) {
+    if (Array.isArray(result[0]) && result[0].length > 0) {
+        userFound = true;
+    }
+    else if (result[0] && typeof result[0] === 'object' && Object.keys(result[0]).length > 0) {
+        userFound = true;
+    }
+}
+if (!userFound) {
+    errors.push("L'ancien mot de passe est incorrect.");
+    return res.render('reset', { errors });
+}
+        if (!result || !Array.isArray(result) || result.length === 0) {
+            errors.push("L'ancien mot de passe est incorrect.");
+            return res.render('reset', { errors });
+        }
+        // Mettre à jour le mot de passe
+        const champs = `mot_de_passe='${nouveau_mot_de_passe.replace(/'/g, "''")}'`;
+        const where = `email='${email.replace(/'/g, "''")}'`;
+        const url = `${process.env.URL_WEBSERVICE}changeDBValues/USERS_Patient/${encodeURIComponent(champs)}/${encodeURIComponent(where)}`;
+        await axios.get(url, {
+            headers: {
+                Authorization: `Basic ${Buffer.from(`${process.env.SQL_USER}:${process.env.SQL_PASSWORD}`).toString('base64')}`
+            },
+        });
+        return res.render('reset', { errors: ["Mot de passe réinitialisé avec succès. Vous pouvez vous connecter."] });
+    } catch (err) {
+        console.error('Erreur reset-password:', err);
+        errors.push("Erreur serveur lors de la réinitialisation.");
+        return res.render('reset', { errors });
+    }
+});
 
   app.post('/createDemande', async (req, res) => {
 

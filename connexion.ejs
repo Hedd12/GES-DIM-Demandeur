@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="icon" type="image/x-icon" href="./images/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo"><span>G</span>es<span>M</span>edic<span>P</span>atient</a>
+    </header>
+    <section id="home" class="home">
+
+        <div class="row">
+            <div class="images">
+                <img src="./images/home.png" alt="">
+            </div>
+            <div class="wrapper">
+                <div class="form-box register">
+                    <h2 class="animation" style="--i:17; --j:0;">CONNEXION</h2>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                 <% if (typeof errors !== 'undefined' && errors && errors.length > 0){ %>
+                        <div class="error-messages">
+                            <ul>
+                                <% errors.forEach(error => { %>
+                                    <li><%= error %></li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>   
+                    <form action="/submit-login" method="POST">
+                        <div class="input-box animation">
+                            <input type="email" name="email" required>
+                            <label>Email</label>
+                            <i class='bx bxs-envelope'></i>
+                        </div>
+                        <div class="input-box animation">
+                            <input type="password" name="mot_de_passe" required>
+                            <label>Mot de passe</label>
+                            <i class='bx bxs-lock-alt'></i>
+                        </div>
+                        <div class="" >
+                            <button type="submit" class="button">Connexion</button>
+                        </div>
+                        <div class="logreg-link animation">
+                            <p>Vous ne disposez pas d'un compte? <a href="/" class="login-link">Inscrivez-vous, </a> </p>
+                            <p><a href="/reset" class="login-link">Réinitialiser mon mot de passe</a></p>
+                        </div>
+                    </form>
+                    
+                </div>
+        </div>
+    </section>
+  
+</body>
+
+</html>

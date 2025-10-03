@@ -1,0 +1,100 @@
+    <!DOCTYPE html>
+    <html lang="fr">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inscription</title>
+        <link rel="icon" type="image/png" href="./images/logo.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="./css/style.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+
+    <body>
+        <header>
+            <a href="#" class="logo"><span>G</span>es<span>M</span>edic<span>P</span>atient</a>
+        </header>
+        <section id="home" class="home">
+
+            <div class="row">
+                <div class="images">
+                    <img src="./images/inscription.png" alt="">
+                </div>
+                <div class="wrapper">
+                    <div class="form-box register">
+                        <h2 class="animation" style="--i:17; --j:0;">INSCRIPTION</h2>
+                        <% if ( typeof errors !== 'undefined' &&errors && errors.length > 0) { %>
+                            <div class="errors">
+                                <% errors.forEach(error => { %>
+                                    <p><%= error %></p>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                        <form action="/register" method="POST" onsubmit="return validateForm()">
+                            <div class="input-box animation" >
+                                <input type="text" id="nom" name="nom" required>
+                                <label>Nom</label>
+                                <i class='bx bxs-user'></i>
+                            </div>
+                            <div class="input-box animation">
+                                <input type="text" id="prenom" name="prenom" required>
+                                <label>Prenom</label>
+                                <i class='bx bxs-user'></i>
+                            </div>
+                            <div class="input-box animation">
+                            <input type="date" id="date_naissance" name="date_naissance" required>
+                                <!-- <label>Date de naissance</label> -->
+                                <!-- <i class='bx bxs-calendar'></i>  -->
+                            </div>
+                            <div class="input-box animation">
+                                <input type="text" id="email" name="email" required>
+                                <label>Email</label>
+                                <i class='bx bxs-envelope'></i>
+                            </div>
+                            <div class="input-box animation" >
+                                <input type="password" id="mot_de_passe" name="mot_de_passe" required>
+                                <label>Mot de passe</label>
+                                <i class='bx bxs-lock-alt'></i>
+                            </div>
+                            <div class="" >
+                                <button type="submit" class="button">S'inscrire</button>
+                            </div>
+                            <div class="logreg-link animation" >
+                                <p>Disposez-vous déjà d'un compte ? <a href="/connexion" class="login-link">Connectez-vous</a></p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <script>
+                        function validateForm() {
+                            const nom = document.getElementById('nom').value.trim();
+                            const prenom = document.getElementById('prenom').value.trim();
+                            const dateNaissance = document.getElementById('date_naissance').value.trim();
+                            const email = document.getElementById('email').value.trim();
+                            const motDePasse = document.getElementById('mot_de_passe').value.trim();
+
+                            if (!nom || !prenom || !dateNaissance || !email || !motDePasse) {
+                                alert('Tous les champs doivent être remplis.');
+                                return false;
+                            }
+                            // Validation de la date 
+                            const date = new Date(dateNaissance);
+                            const now = new Date();
+                            if (isNaN(date) || date > now) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Erreur',
+                                    text: 'La date de naissance est invalide ou dans le futur.',
+                                });
+                                return false;
+                            }
+                            return true;
+                        }
+                    </script>
+            </div>
+        </section>
+        <script src="./js/main.js"></script>
+    </body>
+
+    </html>

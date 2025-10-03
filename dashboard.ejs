@@ -16,8 +16,14 @@
                         <div class="logo">
                             <h2>Ges'Dim<span class="primary">Demandeur</span></h2>
                         </div>
+                        
                     </div>
                     <div class="bar">
+                      <!-- <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                    <button type="button" id="resetPasswordBtn" style="background: #ff9800; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                        Réinitialiser mon mot de passe
+                    </button>
+                </div> -->
                         <a href="/logout">
                             <span class="material-symbols-sharp">logout</span>
                             <h3>Déconnexion</h3>
@@ -26,11 +32,13 @@
                 </aside>
                 
                 <main>
-                    <h1>Tableau de bord</h1>
+                    <!-- <h1>Tableau de bord</h1> -->
+                    <h1 style="margin-bottom: 20px;">Bienvenue , <%= Settings.userName ? Settings.userName : 'Utilisateur' %> !</h1>
                     <button type="button" onclick="openCreateModal()" style="display: flex; align-items: center; gap: 8px; margin-left: auto; background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s;">
                     <span class="material-symbols-sharp" style="font-size: 24px;">add_circle</span>
                     <span style="font-size: 14px; font-weight:700; font-family: 'Roboto', sans-serif;">Créer une nouvelle demande</span>
                     </button>
+                    
                     <div class="recent_order">
                         <table> 
                             <thead>
@@ -436,6 +444,32 @@
     modal.style.display = 'flex';
 
 }
+// réinitialisation du mot de passe
+// document.getElementById('resetPasswordBtn').addEventListener('click', async function() {
+//     const newPassword = prompt("Entrez votre nouveau mot de passe :");
+//     if (!newPassword || newPassword.length < 8) {
+//         alert("Le mot de passe doit contenir au moins 8 caractères.");
+//         return;
+//     }
+//     try {
+//         const response = await fetch('/reset-password', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({ newPassword })
+//         });
+//         const data = await response.json();
+//         if (response.ok) {
+//             alert("Mot de passe réinitialisé avec succès !");
+//         } else {
+//             alert(data.error || "Erreur lors de la réinitialisation.");
+//         }
+//     } catch (err) {
+//         alert("Erreur lors de la réinitialisation.");
+//     }
+// });
+
+
+
 
         function openCreateModal() {
             // Réinitialiser le formulaire
